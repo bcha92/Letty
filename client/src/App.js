@@ -4,6 +4,7 @@ import { PORT } from "./index";
 
 // Components
 import GlobalStyles from "./GlobalStyles";
+import Header from "./components/Header";
 
 // Main App Component
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
   return (
     <BrowserRouter>
     <GlobalStyles />
+    <Header />
     <Switch>
       <Route exact to="/">
         {data}
