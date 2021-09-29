@@ -32,6 +32,8 @@ const App = () => {
     .then(data => setData(data))
 , [setData]);
 
+  console.log(data);
+
   return (
     <BrowserRouter>
     <GlobalStyles />
@@ -46,7 +48,7 @@ const App = () => {
     <Switch>
       {/* Homepage and Properties */}
       <Route exact path="/">
-        <Homepage />{data}
+        <Homepage />
       </Route>
       <Route exact path="/locations">
         <Locations />
