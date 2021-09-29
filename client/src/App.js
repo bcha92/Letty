@@ -7,9 +7,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 // Components
 import GlobalStyles from "./GlobalStyles";
 import Header from "./components/Header";
+import ErrorSplash from "./components/Error";
 import Homepage from "./components/Homepage";
 import About from "./components/About";
 import Contact from "./components/Contact";
+import Profile from "./components/Profile";
 
 // Main App Component
 const App = () => {
@@ -37,10 +39,14 @@ const App = () => {
       logout={logout}
       user={user}
     />
+
     <Switch>
+      {/* Homepage */}
       <Route exact path="/">
         <Homepage />{data}
       </Route>
+
+      {/* About/Contact */}
       <Route path="/about">
         <About />
       </Route>
@@ -50,6 +56,13 @@ const App = () => {
           user={user}
         />
       </Route>
+
+      {/* Profile (Authenticated) */}
+      <Route path="/profile">
+        {isAuthenticated ?
+        <Profile user={user} /> : <ErrorSplash />}
+      </Route>
+
     </Switch>
     </BrowserRouter>
   );

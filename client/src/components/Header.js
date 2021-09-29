@@ -47,29 +47,29 @@ const Header = ({
                         user.nickname.slice(0, 1).toUpperCase()
                         + user.nickname.slice(1,)
                     }</p>
-                    <MobileNav to="/" onClick={closeMenu}>
+                    <MobileNav exact to="/profile" onClick={closeMenu}>
                         LETTY Reservations
                     </MobileNav>
-                    <MobileNav to="/" onClick={closeMenu}>
+                    <MobileNav to="/profile/host" onClick={closeMenu}>
                         LETTY Hosts
                     </MobileNav>
-                    <MobileNav to="/" onClick={logoutHandle}>
+                    <MobileNav to={window.location.origin} onClick={logoutHandle}>
                         Log Out
                     </MobileNav>
                     </> :
 
                     <>
                     <p>Hello Guest</p>
-                    <MobileNav to="/" onClick={loginHandle}>
+                    <MobileNav to={window.location.origin} onClick={loginHandle}>
                         Log In
                     </MobileNav>
                     </>}
 
                     <p>Navigation</p>
-                    <MobileNav to="/" onClick={closeMenu}>
+                    <MobileNav to="/locations" onClick={closeMenu}>
                         Find a LETTY
                     </MobileNav>
-                    <MobileNav to="/" onClick={closeMenu}>
+                    <MobileNav to="/hosting" onClick={closeMenu}>
                         Host a LETTY
                     </MobileNav>
                     <MobileNav to="/about" onClick={closeMenu}>
@@ -83,18 +83,18 @@ const Header = ({
 
             {/* Only visible to larger screens */}
             <WebMenu>
-                <NavWrap className="webLeft" to="/">
+                <NavWrap className="webLeft" to="/" onClick={closeMenu}>
                     <h2>LETTY</h2>
                 </NavWrap>
-                <WebNav to="/">Find a LETTY</WebNav>
-                <WebNav to="/">Host a LETTY</WebNav>
+                <WebNav to="/locations" onClick={closeMenu}>Find a LETTY</WebNav>
+                <WebNav to="/hosting" onClick={closeMenu}>Host a LETTY</WebNav>
             </WebMenu>
 
         </MenuWrap>
 
         {/* Only visible to smaller screens */}
         <MobileMenu>
-            <NavWrap to="/">
+            <NavWrap to="/" onClick={closeMenu}>
                 <h2>LETTY</h2>
             </NavWrap>
         </MobileMenu>
@@ -103,14 +103,14 @@ const Header = ({
 
             {/* Only visible to larger screens */}
             <WebMenu>
-                <WebNav to="/about">About</WebNav>
-                <WebNav to="/contact">Contact</WebNav>
+                <WebNav to="/about" onClick={closeMenu}>About</WebNav>
+                <WebNav to="/contact" onClick={closeMenu}>Contact</WebNav>
             </WebMenu>
 
             {isAuthenticated ? // Only visible if Login Authenticated
             <>
                 <MobileMenu>{/* Only visible to smaller screens */}
-                    <NavWrap to="/" onClick={closeMenu}>
+                    <NavWrap exact to="/profile" onClick={closeMenu}>
                         <img
                             src={user.picture}
                             alt={user.name}
@@ -132,13 +132,13 @@ const Header = ({
                         height="30px"
                     />
                     <UserDrop style={{display: userMenu ? "flex": "none"}}>
-                        <MobileNav to="/" onClick={closeMenu}>
+                        <MobileNav exact to="/profile" onClick={closeMenu}>
                             LETTY Reservations
                         </MobileNav>
-                        <MobileNav to="/" onClick={closeMenu}>
+                        <MobileNav to="/profile/host" onClick={closeMenu}>
                             LETTY Hosts
                         </MobileNav>
-                        <MobileNav to="/" onClick={logoutHandle}>
+                        <MobileNav to={window.location.origin} onClick={logoutHandle}>
                             Log Out
                         </MobileNav>
                     </UserDrop>
