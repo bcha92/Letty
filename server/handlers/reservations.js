@@ -3,40 +3,38 @@ import dotenv from "dotenv";
 dotenv.config();
 const { MONGO_URI } = process.env;
 
-// Test
-export const testMongo = async (req, res) => {
-    // Deconstructed res.locals middleware
-    const { options, database, test } = res.locals;
+// GET Reservations made by user
+export const getUserReservations = async (req, res) => {
+    const { userId } = req.params; // User Identification (Auth0 sub)
+    // Deconstructed res.locals
+    const { options, database, reservations } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
+        // Connect Mongo, begin session
         await mongo.connect();
         const db = mongo.db(database);
+        const results = await db.collection(reservations).find().toArray();
 
-        const results = await db.collection(test).find().toArray();
+        // Results if no reservations are found
         if (results.length === 0) {
-            res.status(404).json({
-                status: 404,
-                message: "No results found",
+            res.status(400).json({
+                status: 400,
+                message: `No reservations found for User ID ${userId}.`,
             })
-            mongo.close();
         }
+        // Results if any reservations are found
         else {
             res.status(200).json({
                 status: 200,
-                message: "Test successful",
+                message: `Reservations found for User ID ${userId}.`,
                 data: results,
             })
         }
     }
 
-    catch (err) { // Error Catching
-        console.log("testMongo Error:", err);
+    catch (err) { // Error Handler
+        console.log("getUserReservation Error:", err);
     }
-    mongo.close();
-};
-
-// Reservations
-export const getUserReservations = async (req, res) => {
-    
+    mongo.close(); // Disconnect Mongo, end session
 };

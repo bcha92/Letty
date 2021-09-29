@@ -13,7 +13,11 @@ const Profile = ({ user }) => {
         <ProfileWrap>
             {/* Main Profile Component */}
             <MainProfile>
-                <h2>Hello {user.nickname.slice(0,1).toUpperCase() + user.nickname.slice(1,)}</h2>
+                <h2>Hello {user.name === user.email ?
+                        user.nickname.slice(0, 1).toUpperCase()
+                        + user.nickname.slice(1,) :
+                        user.name
+                }</h2>
                 <img src={user.picture} alt={user.name} />
                 <ProfileDetails>
                 <p><B>Contact Email:</B> {user.email}</p>

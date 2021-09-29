@@ -6,7 +6,8 @@ import cors from "cors";
 import mongokeys from "./server/MongoMiddleware.js";
 
 // Handlers Import
-import { testMongo } from "./server/handlers/reservations.js";
+import { testMongo } from "./server/handlers/mongotest.js"; // TEST ONLY!!!
+import { getUserReservations } from "./server/handlers/reservations.js";
 
 // Local Port to host application || 4000 by default
 const port = process.env.PORT || 4000;
@@ -15,8 +16,9 @@ const app = express(); // Initialized Express App
 app.use(cors()); // Cross-Origin Resource Sharing
 
 // Endpoints
+app.get("/reservations/:userId", mongokeys, getUserReservations);
 
-app.get("/", mongokeys, testMongo);
+app.get("/test", mongokeys, testMongo);
 // Error Handling
 app.get("*", (req, res) => res.status(400).json(
     "Error 404: This is an error. Please check your endpoints."

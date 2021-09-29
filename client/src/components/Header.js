@@ -43,9 +43,10 @@ const Header = ({
 
                     {isAuthenticated ? // User Navigation shown if Authenticated
                     <>
-                    <p>Hello {
+                    <p>Hello {user.name === user.email ?
                         user.nickname.slice(0, 1).toUpperCase()
-                        + user.nickname.slice(1,)
+                        + user.nickname.slice(1,) :
+                        user.name
                     }</p>
                     <MobileNav exact to="/profile" onClick={closeMenu}>
                         LETTY Reservations
@@ -121,9 +122,10 @@ const Header = ({
                 </MobileMenu>
 
                 <WebMenu className="userMenu" onClick={toggleUser} >{/* Only visible to larger screens */}
-                    <span>Hello {
+                    <span>Hello {user.name === user.email ?
                         user.nickname.slice(0, 1).toUpperCase()
-                        + user.nickname.slice(1,)
+                        + user.nickname.slice(1,) :
+                        user.name
                     }</span>
                     <img
                         src={user.picture}
