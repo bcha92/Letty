@@ -83,7 +83,7 @@ const Header = ({
 
             {/* Only visible to larger screens */}
             <WebMenu>
-                <NavWrap className="webLeft" to="/" onClick={closeMenu}>
+                <NavWrap className="webLeft" exact to="/" onClick={closeMenu}>
                     <h2>LETTY</h2>
                 </NavWrap>
                 <WebNav to="/locations" onClick={closeMenu}>Find a LETTY</WebNav>
@@ -94,7 +94,7 @@ const Header = ({
 
         {/* Only visible to smaller screens */}
         <MobileMenu>
-            <NavWrap to="/" onClick={closeMenu}>
+            <NavWrap exact to="/" onClick={closeMenu}>
                 <h2>LETTY</h2>
             </NavWrap>
         </MobileMenu>

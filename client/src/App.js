@@ -9,6 +9,9 @@ import GlobalStyles from "./GlobalStyles";
 import Header from "./components/Header";
 import ErrorSplash from "./components/Error";
 import Homepage from "./components/Homepage";
+import Locations from "./components/Properties";
+import PropertyDetail from "./components/Properties/Property";
+import Hosting from "./components/Properties/Hosting";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Profile from "./components/Profile";
@@ -41,9 +44,21 @@ const App = () => {
     />
 
     <Switch>
-      {/* Homepage */}
+      {/* Homepage and Properties */}
       <Route exact path="/">
         <Homepage />{data}
+      </Route>
+      <Route exact path="/locations">
+        <Locations />
+      </Route>
+      <Route path="/locations/:propertyId">
+        <PropertyDetail />
+      </Route>
+      <Route path="/hosting">
+        <Hosting
+          isAuthenticated={isAuthenticated}
+          user={user}
+        />
       </Route>
 
       {/* About/Contact */}
