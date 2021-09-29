@@ -21,14 +21,17 @@ const Header = ({
         setUserMenu(false);
     };
 
-    // Auth0 Login Handlers
-    const loginHandle = () => loginWithRedirect();
+    // Auth0 Login/Logout Handlers
+    const loginHandle = () => {
+        setShowMenu(false);
+        setUserMenu(false);
+        loginWithRedirect();
+    };
     const logoutHandle = () => {
         setShowMenu(false);
         setUserMenu(false);
         logout({returnTo: window.location.origin})
     };
-    console.log(user);
 
     return <HeaderWrap>
         <MenuWrap>
@@ -38,7 +41,7 @@ const Header = ({
                 <CgMenuGridR size="30px" onClick={toggleMenu} />
                 <DropDown style={{display: showMenu ? "flex" : "none"}}>
 
-                    {isAuthenticated && // User Navigation shown if Authenticated
+                    {isAuthenticated ? // User Navigation shown if Authenticated
                     <>
                     <p>Hello {
                         user.nickname.slice(0, 1).toUpperCase()
@@ -53,9 +56,16 @@ const Header = ({
                     <MobileNav to="/" onClick={logoutHandle}>
                         Log Out
                     </MobileNav>
-                    <p>Navigation</p>
+                    </> :
+
+                    <>
+                    <p>Hello Guest</p>
+                    <MobileNav to="/" onClick={loginHandle}>
+                        Log In
+                    </MobileNav>
                     </>}
 
+                    <p>Navigation</p>
                     <MobileNav to="/" onClick={closeMenu}>
                         Find a LETTY
                     </MobileNav>
