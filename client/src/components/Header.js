@@ -72,11 +72,11 @@ const Header = ({
                     <MobileNav to="/" onClick={closeMenu}>
                         Host a LETTY
                     </MobileNav>
-                    <MobileNav to="/" onClick={closeMenu}>
-                        About Us
+                    <MobileNav to="/about" onClick={closeMenu}>
+                        About
                     </MobileNav>
-                    <MobileNav to="/" onClick={closeMenu}>
-                        Contact Us
+                    <MobileNav to="/contact" onClick={closeMenu}>
+                        Contact
                     </MobileNav>
                 </DropDown>
             </MobileMenu>
@@ -103,8 +103,8 @@ const Header = ({
 
             {/* Only visible to larger screens */}
             <WebMenu>
-                <WebNav to="/">About Us</WebNav>
-                <WebNav to="/">Contact Us</WebNav>
+                <WebNav to="/about">About</WebNav>
+                <WebNav to="/contact">Contact</WebNav>
             </WebMenu>
 
             {isAuthenticated ? // Only visible if Login Authenticated

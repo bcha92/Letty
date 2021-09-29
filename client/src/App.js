@@ -7,13 +7,16 @@ import { useAuth0 } from "@auth0/auth0-react";
 // Components
 import GlobalStyles from "./GlobalStyles";
 import Header from "./components/Header";
+import Homepage from "./components/Homepage";
+import About from "./components/About";
+import Contact from "./components/Contact";
 
 // Main App Component
 const App = () => {
   // Auth0 Login Redirect Handler
   const {
     loginWithRedirect, error, isAuthenticated,
-    isLoading, logout, user,
+    logout, user,// isLoading,
   } = useAuth0();
   
   const [data, setData] = useState(""); // TESTING
@@ -35,8 +38,17 @@ const App = () => {
       user={user}
     />
     <Switch>
-      <Route exact to="/">
-        {data}
+      <Route exact path="/">
+        <Homepage />{data}
+      </Route>
+      <Route path="/about">
+        <About />
+      </Route>
+      <Route path="/contact">
+        <Contact
+          isAuthenticated={isAuthenticated}
+          user={user}
+        />
       </Route>
     </Switch>
     </BrowserRouter>
