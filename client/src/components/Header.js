@@ -51,7 +51,7 @@ const Header = ({
                         LETTY Reservations
                     </MobileNav>
                     <MobileNav to="/" onClick={closeMenu}>
-                        Your Hosted LETTYs
+                        LETTY Hosts
                     </MobileNav>
                     <MobileNav to="/" onClick={logoutHandle}>
                         Log Out
@@ -136,7 +136,7 @@ const Header = ({
                             LETTY Reservations
                         </MobileNav>
                         <MobileNav to="/" onClick={closeMenu}>
-                            Your Hosted LETTYs
+                            LETTY Hosts
                         </MobileNav>
                         <MobileNav to="/" onClick={logoutHandle}>
                             Log Out

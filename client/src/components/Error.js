@@ -9,7 +9,7 @@ const ErrorSplash = () => {
         <VscError size="200px" />
         <h1>Oops!</h1>
         <h3>
-            This is either an error, or you do not have access to this page.
+            This is either a faulty link, or you do not have permission to access to this page.
         </h3>
         <HomeButton to="/">HOME</HomeButton>
     </ErrWrap>
