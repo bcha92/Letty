@@ -1,12 +1,15 @@
 // Node Express Import
 import express, { json } from "express";
 import cors from "cors";
+import morgan from "morgan";
 
 //Middleware Import
 import mongokeys from "./server/MongoMiddleware.js";
 
 // Handlers Import
-import { getUserReservations, getReservation } from "./server/handlers/reservations.js";
+import {
+    getUserReservations, getReservation, bookReservation,
+} from "./server/handlers/reservations.js";
 import { getProperties, getProperty } from "./server/handlers/properties.js";
 
 import { testMongo } from "./server/handlers/mongotest.js"; // TEST ONLY!!!
@@ -16,12 +19,17 @@ const port = process.env.PORT || 4000;
 
 const app = express(); // Initialized Express App
 app.use(cors()); // Cross-Origin Resource Sharing
+app.use(express.json()); // IMPORTANT FOR POST // DO NOT REMOVE
+app.use(morgan("tiny")); // Logger Middleware to log http request errors
 
 // Endpoints
 // GET List of Reservation by User ID
 app.get("/reservations/:userId", mongokeys, getUserReservations);
 // GET a Reservation by Reservation ID
 app.get("/reservations/:userId/:reservationId", mongokeys, getReservation);
+// BOOK a Reservation
+app.post("/book", mongokeys, bookReservation);
+
 // GET List of Properties by User ID
 app.get("/properties", mongokeys, getProperties);
 // GET a Property by Property ID
