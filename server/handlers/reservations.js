@@ -109,12 +109,11 @@ export const bookReservation = async (req, res) => {
         const _id = uuidv4(); // new Reservation ID Created
         const newBody = { _id, timestamp: new Date(), ...req.body }; // Format for new Body
         const newRes = { _id, charge, approved: null }; // Format for Entry in Properties
-        console.log(newRes);
 
         await db.collection(test).insertOne(newBody); // Insert into Reservation // **Change Here
         // Add more // Insert into Properties
 
-        // Return res.status
+        // Return res.status once reservation is booked
         res.status(201).json({
             status: 201,
             message: `Reservation successfully booked: ID ${_id}`,
@@ -140,7 +139,6 @@ export const deleteReservation = async (req, res) => {
         await mongo.connect();
         const db = mongo.db(database);
         const reservation = await db.collection(test).findOne({ _id: reservationId });
-        console.log(reservation);
 
         // If no Reservation Found, Return Error and Close Mongo
         if (reservation === null) {

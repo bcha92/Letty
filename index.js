@@ -10,9 +10,9 @@ import mongokeys from "./server/MongoMiddleware.js";
 import {
     getUserReservations, getReservation, bookReservation, deleteReservation,
 } from "./server/handlers/reservations.js";
-import { getProperties, getProperty } from "./server/handlers/properties.js";
-
-import { testMongo } from "./server/handlers/mongotest.js"; // TEST ONLY!!!
+import {
+    addProperty, getProperties, getProperty,
+} from "./server/handlers/properties.js";
 
 // Local Port to host application || 4000 by default
 const port = process.env.PORT || 4000;
@@ -27,7 +27,7 @@ app.use(morgan("tiny")); // Logger Middleware to log http request errors
 app.get("/reservations/:userId", mongokeys, getUserReservations);
 // GET a Reservation by Reservation ID
 app.get("/reservations/:userId/:reservationId", mongokeys, getReservation);
-// BOOK a Reservation
+// POST / Book a new Reservation
 app.post("/book", mongokeys, bookReservation);
 // DELETE a Reservation
 app.delete("/book/:reservationId", mongokeys, deleteReservation);
@@ -36,8 +36,9 @@ app.delete("/book/:reservationId", mongokeys, deleteReservation);
 app.get("/properties", mongokeys, getProperties);
 // GET a Property by Property ID
 app.get("/properties/:propertyId", mongokeys, getProperty);
+// POST / Add a new Property
+app.post("/add", mongokeys, addProperty);
 
-app.get("/test", mongokeys, testMongo);
 // Error Handling
 app.get("*", (req, res) => res.status(400).json(
     "Error 404: This is an error. Please check your endpoints."

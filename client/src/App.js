@@ -24,15 +24,13 @@ const App = () => {
     logout, user,// isLoading,
   } = useAuth0();
   
-  const [data, setData] = useState(""); // TESTING
+//   const [data, setData] = useState(""); // TESTING
 
-  useEffect(() =>
-    fetch(PORT)
-    .then(res => res.json())
-    .then(data => setData(data))
-, [setData]);
-
-  console.log(data);
+//   useEffect(() =>
+//     fetch(PORT)
+//     .then(res => res.json())
+//     .then(data => setData(data))
+// , [setData]);
 
   return (
     <BrowserRouter>
