@@ -9,14 +9,14 @@ import { v4 as uuidv4 } from "uuid"; // Random UUID Generator
 export const getUserReservations = async (req, res) => {
     const { userId } = req.params; // User Identification (Auth0 sub)
     // Deconstructed res.locals
-    const { options, database, reservations } = res.locals;
+    const { options, database, reservations, test } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
         // Connect Mongo, begin session
         await mongo.connect();
         const db = mongo.db(database);
-        const results = await db.collection(reservations).find({ userId }).toArray();
+        const results = await db.collection(test).find({ userId }).toArray();
 
         // Results if no reservations are found
         if (results.length === 0) {
@@ -44,22 +44,22 @@ export const getUserReservations = async (req, res) => {
 // GET a Reservation by Reservation ID
 export const getReservation = async (req, res) => {
     // User ID (Auth0 sub) and Reservation ID
-    const { reservationId } = req.params;
+    const { userId, reservationId } = req.params;
     // Deconstructed res.locals
-    const { options, database, reservations } = res.locals;
+    const { options, database, reservations, test } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
         // Connect Mongo, begin session
         await mongo.connect();
         const db = mongo.db(database);
-        const result = await db.collection(reservations).findOne({ _id: reservationId });
+        const result = await db.collection(test).findOne({ _id: reservationId });
 
         // Result if no reservation is found
-        if (result === null) {
+        if (result === null || result.userId !== userId) {
             res.status(400).json({
                 status: 400,
-                message: `Reservation ID ${reservationId} not found.`,
+                message: `Reservation ID ${reservationId} not found, or you are not authorized to access this page`,
             })
         }
         // Result if reservation is found
@@ -81,7 +81,7 @@ export const getReservation = async (req, res) => {
 // POST / Book a Reservation
 export const bookReservation = async (req, res) => {
     // Deconstructed req.body
-    const { propertyId, dates, charge, cc, cvc } = req.body;
+    const { propertyId, spaceId, dates, charge, cc, cvc } = req.body;
 
     // Check for missing information before starting Mongo
     if (cc.length === 0 || cvc.length === 0) {
@@ -102,16 +102,44 @@ export const bookReservation = async (req, res) => {
         const db = mongo.db(database);
 
         // Check for overlapping booking dates for this property
-        const property = await db.collection(properties).findOne({ _id: propertyId });
-        // Add more
+        const property = await db.collection(test).findOne({ _id: propertyId });
+        let checkRes = false; // Initial Flag for Checking Reservation
+        let roomBookings;
+        // Iterates through each room in property.rooms
+        property.rooms.forEach(room => {
+            if (room.id === spaceId) { // If booking room match found,
+                roomBookings = room.reservations;
+            }
+        })
+        // Iterates through each date of booking
+        dates.forEach(date => {
+            // Iterates through each reservation
+            roomBookings.forEach(booking => {
+                if (booking.dates.includes(date)) {
+                    checkRes = true;
+                }
+            })
+        });
+        // If checkRes-ervation is true (i.e. conflicting booking dates), error is returned.
+        if (checkRes) {
+            mongo.close();
+            return res.status(400).json({
+                status: 400,
+                message: "One or more dates you are trying to book has already been booked by another party. Please select another date(s) for this space, or choose another space to book. Thank you.",
+                data: req.body,
+            })
+        }
 
         // Once booking dates is finalized, reservation is entered into the system
         const _id = uuidv4(); // new Reservation ID Created
         const newBody = { _id, timestamp: new Date(), ...req.body }; // Format for new Body
-        const newRes = { _id, charge, approved: null }; // Format for Entry in Properties
+        const newRes = { _id, charge, dates, approved: null }; // Format for Entry in Properties
 
         await db.collection(test).insertOne(newBody); // Insert into Reservation // **Change Here
-        // Add more // Insert into Properties
+        await db.collection(test).updateOne( // Update the Property
+            { _id: propertyId, "rooms.id": spaceId }, // Filter Parameter to Find Property
+            { $push: { "rooms.$.reservations": newRes }} // Parameters to update // PUSH
+        );
 
         // Return res.status once reservation is booked
         res.status(201).json({
@@ -149,10 +177,30 @@ export const deleteReservation = async (req, res) => {
             })
         }
 
+        // Update Property // Find and Remove Reservation Entry from "Reservations"
+        const property = await db.collection(test).findOne({ _id: reservation.propertyId });
+        let selectedRoom;
+        // Iterates each room and assigns selectedRoom's reservations if matches spaceId
+        property.rooms.forEach(room => {
+            if (room.id === reservation.spaceId) {
+                selectedRoom = room.reservations;
+            }
+        });
+        let newReservations = []; // New Array for Updated Reservations
+        // Pushes all reservations into new array that does not match the current reservationId
+        selectedRoom.forEach(booking => {
+            if (booking._id !== reservationId) {
+                newReservations.push(booking);
+            }
+        });
+
+        await db.collection(test).updateOne( // Update the Property with new Reservations Array
+            { _id: reservation.propertyId, "rooms.id": reservation.spaceId },
+            { $set: { "rooms.$.reservations": newReservations }}
+        );
+
         // Remove Reservation from List of Reservations
         await db.collection(test).deleteOne({ _id: reservationId });
-        // Update Property // Remove Reservation Entry from "Reservations"
-        const property = await db.collection(properties).findOne({ _id: reservation.propertyId });
 
         // Once finished, return res.status and success
         res.status(200).json({
