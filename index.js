@@ -8,7 +8,7 @@ import mongokeys from "./server/MongoMiddleware.js";
 
 // Handlers Import
 import {
-    getUserReservations, getReservation, bookReservation,
+    getUserReservations, getReservation, bookReservation, deleteReservation,
 } from "./server/handlers/reservations.js";
 import { getProperties, getProperty } from "./server/handlers/properties.js";
 
@@ -29,6 +29,8 @@ app.get("/reservations/:userId", mongokeys, getUserReservations);
 app.get("/reservations/:userId/:reservationId", mongokeys, getReservation);
 // BOOK a Reservation
 app.post("/book", mongokeys, bookReservation);
+// DELETE a Reservation
+app.delete("/book/:reservationId", mongokeys, deleteReservation);
 
 // GET List of Properties by User ID
 app.get("/properties", mongokeys, getProperties);

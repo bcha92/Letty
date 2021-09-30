@@ -93,7 +93,7 @@ export const bookReservation = async (req, res) => {
     }
 
     // Deconstructed res.locals
-    const { options, database, properties, test } = res.locals;
+    const { options, database, properties, reservations, test } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
@@ -126,4 +126,45 @@ export const bookReservation = async (req, res) => {
         console.log("bookReservation:", err);
     }
     mongo.close(); // Disconnect Mongo, end sessoin
+};
+
+// DELETE a Reservation by Reservation ID
+export const deleteReservation = async (req, res) => {
+    const { reservationId } = req.params; // Reservation ID
+    // Deconstructed res.locals
+    const { options, database, properties, reservations, test } = res.locals;
+    const mongo = new MongoClient(MONGO_URI, options);
+
+    try {
+        // Connect Mongo, begin session
+        await mongo.connect();
+        const db = mongo.db(database);
+        const reservation = await db.collection(test).findOne({ _id: reservationId });
+        console.log(reservation);
+
+        // If no Reservation Found, Return Error and Close Mongo
+        if (reservation === null) {
+            mongo.close(); // End Session
+            return res.status(400).json({
+                status: 400,
+                message: `The reservation you are looking for by ID ${reservationId} does not exist.`,
+            })
+        }
+
+        // Remove Reservation from List of Reservations
+        await db.collection(test).deleteOne({ _id: reservationId });
+        // Update Property // Remove Reservation Entry from "Reservations"
+        const property = await db.collection(properties).findOne({ _id: reservation.propertyId });
+
+        // Once finished, return res.status and success
+        res.status(200).json({
+            status: 204,
+            message: `Reservation ID ${reservationId} has successfully been deleted.`,
+        })
+    }
+
+    catch (err) { // Error Handling
+        console.log("deleteReservation Error:", err);
+    }
+    mongo.close(); // Disconnect Mongo, end session
 };
