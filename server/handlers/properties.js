@@ -99,7 +99,7 @@ export const addProperty = async (req, res) => {
     }
 
     // Deconstructed res.locals
-    const { options, database, properties, test } = res.locals;
+    const { options, database, properties } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
@@ -109,7 +109,7 @@ export const addProperty = async (req, res) => {
 
         // Add property to database
         const newProperty = { _id: uuidv4(), registered: new Date(), ...req.body };
-        await db.collection(test).insertOne(newProperty);
+        await db.collection(properties).insertOne(newProperty);
 
         // Return res.status once property is added
         res.status(201).json({

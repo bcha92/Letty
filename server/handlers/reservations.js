@@ -9,14 +9,14 @@ import { v4 as uuidv4 } from "uuid"; // Random UUID Generator
 export const getUserReservations = async (req, res) => {
     const { userId } = req.params; // User Identification (Auth0 sub)
     // Deconstructed res.locals
-    const { options, database, reservations, test } = res.locals;
+    const { options, database, reservations } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
         // Connect Mongo, begin session
         await mongo.connect();
         const db = mongo.db(database);
-        const results = await db.collection(test).find({ userId }).toArray();
+        const results = await db.collection(reservations).find({ userId }).toArray();
 
         // Results if no reservations are found
         if (results.length === 0) {
@@ -46,14 +46,14 @@ export const getReservation = async (req, res) => {
     // User ID (Auth0 sub) and Reservation ID
     const { userId, reservationId } = req.params;
     // Deconstructed res.locals
-    const { options, database, reservations, test } = res.locals;
+    const { options, database, reservations } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
         // Connect Mongo, begin session
         await mongo.connect();
         const db = mongo.db(database);
-        const result = await db.collection(test).findOne({ _id: reservationId });
+        const result = await db.collection(reservations).findOne({ _id: reservationId });
 
         // Result if no reservation is found
         if (result === null || result.userId !== userId) {
@@ -93,7 +93,7 @@ export const bookReservation = async (req, res) => {
     }
 
     // Deconstructed res.locals
-    const { options, database, properties, reservations, test } = res.locals;
+    const { options, database, properties, reservations } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
@@ -102,7 +102,7 @@ export const bookReservation = async (req, res) => {
         const db = mongo.db(database);
 
         // Check for overlapping booking dates for this property
-        const property = await db.collection(test).findOne({ _id: propertyId });
+        const property = await db.collection(properties).findOne({ _id: propertyId });
         let checkRes = false; // Initial Flag for Checking Reservation
         let roomBookings;
         // Iterates through each room in property.rooms
@@ -135,8 +135,8 @@ export const bookReservation = async (req, res) => {
         const newBody = { _id, timestamp: new Date(), ...req.body }; // Format for new Body
         const newRes = { _id, charge, dates, approved: null }; // Format for Entry in Properties
 
-        await db.collection(test).insertOne(newBody); // Insert into Reservation // **Change Here
-        await db.collection(test).updateOne( // Update the Property
+        await db.collection(reservations).insertOne(newBody); // Insert into Reservation // **Change Here
+        await db.collection(properties).updateOne( // Update the Property
             { _id: propertyId, "rooms.id": spaceId }, // Filter Parameter to Find Property
             { $push: { "rooms.$.reservations": newRes }} // Parameters to update // PUSH
         );
@@ -159,14 +159,14 @@ export const bookReservation = async (req, res) => {
 export const deleteReservation = async (req, res) => {
     const { reservationId } = req.params; // Reservation ID
     // Deconstructed res.locals
-    const { options, database, properties, reservations, test } = res.locals;
+    const { options, database, properties, reservations } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
         // Connect Mongo, begin session
         await mongo.connect();
         const db = mongo.db(database);
-        const reservation = await db.collection(test).findOne({ _id: reservationId });
+        const reservation = await db.collection(reservations).findOne({ _id: reservationId });
 
         // If no Reservation Found, Return Error and Close Mongo
         if (reservation === null) {
@@ -178,7 +178,7 @@ export const deleteReservation = async (req, res) => {
         }
 
         // Update Property // Find and Remove Reservation Entry from "Reservations"
-        const property = await db.collection(test).findOne({ _id: reservation.propertyId });
+        const property = await db.collection(properties).findOne({ _id: reservation.propertyId });
         let selectedRoom;
         // Iterates each room and assigns selectedRoom's reservations if matches spaceId
         property.rooms.forEach(room => {
@@ -194,13 +194,13 @@ export const deleteReservation = async (req, res) => {
             }
         });
 
-        await db.collection(test).updateOne( // Update the Property with new Reservations Array
+        await db.collection(properties).updateOne( // Update the Property with new Reservations Array
             { _id: reservation.propertyId, "rooms.id": reservation.spaceId },
             { $set: { "rooms.$.reservations": newReservations }}
         );
 
         // Remove Reservation from List of Reservations
-        await db.collection(test).deleteOne({ _id: reservationId });
+        await db.collection(reservations).deleteOne({ _id: reservationId });
 
         // Once finished, return res.status and success
         res.status(200).json({
