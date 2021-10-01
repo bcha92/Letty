@@ -28,27 +28,26 @@ const Contact = ({ isAuthenticated, user }) => {
                 <Form onSubmit={(e) => {
                     // Form Submit Handler with Default Handler
                     e.preventDefault();
-                    console.log("Submitted Form", form);
                     submitHandle();
                 }}>
                     <Entries>
-                        <Input
+                        <Input // Full Name
                             placeholder="Full Name *"
                             defaultValue={isAuthenticated ? user.nickname : ""}
-                            onChange={(e) => setForm({...form, name: e.target.value})}
+                            onChange={e => setForm({...form, name: e.target.value})}
                             required
                         />
-                        <Input
+                        <Input // Email
                             placeholder="Email *"
                             defaultValue={isAuthenticated ? user.email : ""}
-                            onChange={(e) => setForm({...form, email: e.target.value})}
+                            onChange={e => setForm({...form, email: e.target.value})}
                             type="email"
                             required
                         />
-                        <Select
+                        <Select // Select a reason for inquiry
                             id="inquiry"
                             defaultValue=""
-                            onChange={(e) => setForm({...form, inquiry: e.target.value})}
+                            onChange={e => setForm({...form, inquiry: e.target.value})}
                             required
                         >
                             <option value="" disabled>Your Inquiry</option>
@@ -56,18 +55,19 @@ const Contact = ({ isAuthenticated, user }) => {
                             <option value="host">Hosting a Workspace</option>
                             <option value="other-see notes">Other</option>
                         </Select>
-                        <Input
+                        <Input // Phone number
                             placeholder="Phone"
                             type="tel"
-                            onChange={(e) => setForm({...form, phone: e.target.value})}
+                            onChange={e => setForm({...form, phone: e.target.value})}
                         />
-                        <Input placeholder="Company Name"
-                            onChange={(e) => setForm({...form, company: e.target.value})}
+                        <Input // Company Name
+                            placeholder="Company Name"
+                            onChange={e => setForm({...form, company: e.target.value})}
                         />
-                        <Select
+                        <Select // Size of Company Dropdown
                             id="size"
                             defaultValue=""
-                            onChange={(e) => setForm({...form, size: e.target.value})}
+                            onChange={e => setForm({...form, size: e.target.value})}
                         >
                             <option value="" disabled>Company size (optional)</option>
                             <option value="small">1-20</option>
@@ -76,12 +76,15 @@ const Contact = ({ isAuthenticated, user }) => {
                         </Select>
                     </Entries>
                     <Entries>
-                        <Notes
+                        <Notes // Additional Details
                             placeholder="Notes"
                             type="textarea"
-                            onChange={(e) => setForm({...form, notes: e.target.value})}
+                            onChange={e => setForm({...form, notes: e.target.value})}
                         />
-                        <Submit type="submit" value="Get in Touch" />
+                        <Submit
+                            type="submit"
+                            value="Get in Touch"
+                        />
                     </Entries>
                 </Form>
             </ContactForm>
