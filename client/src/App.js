@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { PORT } from "./index";
+
 // Auth0 Context
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -58,6 +59,7 @@ const App = () => {
         <Hosting
           isAuthenticated={isAuthenticated}
           user={user}
+          PORT={PORT}
         />
       </Route>
 

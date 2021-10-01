@@ -79,18 +79,9 @@ export const getProperty = async (req, res) => {
 // ADD a Property
 export const addProperty = async (req, res) => {
     // Deconstrcuted req.body
-    const { name, address, country, rooms } = req.body;
+    const { name, address } = req.body;
 
-    // Check for missing information before starting Mongo
-    let missingInfo = false;
-    rooms.forEach(room => {
-        if (room.id.length === 0 || room.price.length === 0) {
-            missingInfo = true;
-        }
-    });
-
-    if (name.length === 0 || address.length === 0 ||
-    country.length === 0 || rooms.length === 0 || missingInfo) {
+    if (name.length === 0 || address.length === 0 || missingInfo) {
         return res.status(400).json({
             status: 400,
             message: `Missing Information, unable to process`,
