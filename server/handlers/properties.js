@@ -81,7 +81,7 @@ export const addProperty = async (req, res) => {
     // Deconstrcuted req.body
     const { name, address } = req.body;
 
-    if (name.length === 0 || address.length === 0 || missingInfo) {
+    if (name.length === 0 || address.length === 0) {
         return res.status(400).json({
             status: 400,
             message: `Missing Information, unable to process`,
@@ -106,7 +106,7 @@ export const addProperty = async (req, res) => {
         res.status(201).json({
             status: 201,
             message: "New property added to site!",
-            date: newProperty,
+            data: newProperty,
         })
     }
 

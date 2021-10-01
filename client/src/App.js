@@ -50,10 +50,10 @@ const App = () => {
         <Homepage />
       </Route>
       <Route exact path="/locations">
-        <Locations />
+        <Locations PORT={PORT} />
       </Route>
       <Route path="/locations/:propertyId">
-        <PropertyDetail />
+        <PropertyDetail PORT={PORT} />
       </Route>
       <Route path="/hosting">
         <Hosting

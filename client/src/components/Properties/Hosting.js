@@ -40,6 +40,7 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
             if (status === 201) { // If request was successful
                 setStatus("success");
                 setMessage(message);
+                console.log(json);
                 history.push(`/locations/${json.data._id}`)
             }
             else { // Else, request was not successful
