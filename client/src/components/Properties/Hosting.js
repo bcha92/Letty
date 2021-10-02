@@ -40,7 +40,7 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
             if (status === 201) { // If request was successful
                 setStatus("success");
                 setMessage(message);
-                console.log(json);
+                // Once finished, redirects to new property page
                 history.push(`/locations/${json.data._id}`)
             }
             else { // Else, request was not successful
@@ -89,7 +89,8 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
                     onChange={e => setForm({...form, restrictions: e.target.value})}
                 />
 
-                {status === "error" &&
+                {// Error Message Handler
+                status === "error" &&
                 <ErrBubble>
                     <h3>Error!</h3>
                     <p>{message}</p>

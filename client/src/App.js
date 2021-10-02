@@ -53,7 +53,11 @@ const App = () => {
         <Locations PORT={PORT} />
       </Route>
       <Route path="/locations/:propertyId">
-        <PropertyDetail PORT={PORT} />
+        <PropertyDetail
+          isAuthenticated={isAuthenticated}
+          user={user}
+          PORT={PORT}
+        />
       </Route>
       <Route path="/hosting">
         <Hosting
@@ -77,7 +81,10 @@ const App = () => {
       {/* Profile (Authenticated) */}
       <Route path="/profile">
         {isAuthenticated ?
-        <Profile user={user} /> : <ErrorSplash />}
+        <Profile
+          user={user}
+          PORT={PORT}
+        /> : <ErrorSplash />}
       </Route>
 
     </Switch>

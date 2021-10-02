@@ -84,7 +84,7 @@ export const addProperty = async (req, res) => {
     if (name.length === 0 || address.length === 0) {
         return res.status(400).json({
             status: 400,
-            message: `Missing Information, unable to process`,
+            message: "Missing Information, unable to process",
             data: req.body,
         })
     }
@@ -115,3 +115,55 @@ export const addProperty = async (req, res) => {
     }
     mongo.close(); // Disconnect Mongo, end session
 };
+
+// ADD a Room to an Existing Property
+export const addRoom = async (req, res) => {
+    // Missing Information Handler // Rate can be 0 and does not need to be checked
+    if (req.body.id.length === 0) {
+        return res.status(400).json({
+            status: 400,
+            message: "Missing Information, unable to process",
+            data: req.body,
+        })
+    }
+
+    const { propertyId } = req.params; // Property ID
+    // Deconstructed res.locals
+    const { options, database, properties } = res.locals;
+    const mongo = new MongoClient(MONGO_URI, options);
+
+    try {
+        // Connect Mongo, begin session
+        await mongo.connect();
+        const db = mongo.db(database);
+        const result = await db.collection(properties).findOne({ _id: propertyId });
+
+        // Result if no reservation is found
+        if (result === null) {
+            res.status(400).json({
+                status: 400,
+                message: `The property you are searching for by ID ${propertyId} is not found.`,
+            })
+        }
+        // Result if reservation is found
+        else {
+            // Insert req.body in rooms in Property
+            await db.collection(properties).updateOne(
+                { _id: propertyId }, // Filter Parameter to Find Property
+                { $push: { rooms: req.body}}
+            );
+
+            // Return res.status once room is added
+            res.status(200).json({
+                status: 204,
+                message: `Successfully added Room ${req.body.id} in Property ID ${propertyId}`,
+                data: req.body,
+            })
+        }
+    }
+
+    catch (err) {
+        console.log("addRoom Error:", err);
+    }
+    mongo.close(); // Disconnect Mongo, end session
+}

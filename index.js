@@ -1,5 +1,5 @@
 // Node Express Import
-import express, { json } from "express";
+import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 
@@ -11,7 +11,7 @@ import {
     getUserReservations, getReservation, bookReservation, deleteReservation,
 } from "./server/handlers/reservations.js";
 import {
-    addProperty, getProperties, getProperty,
+    addProperty, getProperties, getProperty, addRoom,
 } from "./server/handlers/properties.js";
 
 // Local Port to host application || 4000 by default
@@ -38,6 +38,8 @@ app.get("/properties", mongokeys, getProperties);
 app.get("/properties/:propertyId", mongokeys, getProperty);
 // POST / Add a new Property
 app.post("/add", mongokeys, addProperty);
+// PATCH / Add a room to a Property
+app.patch("/properties/:propertyId", mongokeys, addRoom);
 
 // Error Handling
 app.get("*", (req, res) => res.status(400).json(

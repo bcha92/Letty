@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 // Locations Component
@@ -9,13 +10,29 @@ const Locations = ({ PORT }) => {
     useEffect(() => {
         fetch(PORT + "/properties")
         .then(res => res.json())
-        .then(data => setList(data))
+        .then(data => setList(data.data))
     }, [PORT])
 
     console.log(list);
     
     return <LocationWrap>
         <h2>Locations</h2>
+        <LocationList>
+            {list !== null ? list.map(property =>
+                // List of Properties Iterated in DOM
+                <Item
+                    key={property._id}
+                    to={`/locations/${property._id}`}
+                >
+                    <h2>{property.name}</h2>
+                    <p>
+                        {property.address}
+                        {property.suite.length !== 0 &&
+                        ", " + property.suite}
+                    </p>
+                </Item>
+            ) : <h2>Loading</h2>}
+        </LocationList>
     </LocationWrap>
 };
 
@@ -28,6 +45,21 @@ const LocationWrap = styled.div`
         font-size: 30px;
         margin-bottom: 20px;
     };
+`;
+
+const LocationList = styled.div`
+    display: flex;
+    flex-flow: column wrap;
+`;
+
+const Item = styled(Link)`
+    text-decoration: none;
+    border: 4px solid gray;
+    border-radius: 10px;
+    color: black;
+    padding: 10px;
+    margin: 10px 0;
+    max-width: 700px;
 `;
 
 export default Locations;

@@ -7,7 +7,7 @@ import Reservations from "./Reservations";
 import Hosts from "./Hosts";
 
 // Main Profile Component
-const Profile = ({ user }) => {
+const Profile = ({ user, PORT }) => {
     console.log(user);
     return <BrowserRouter>
         <ProfileWrap>
@@ -37,10 +37,16 @@ const Profile = ({ user }) => {
             {/* Profile Sub-Components: Reservations/Hosts */}
             <Switch>
                 <Route exact path="/profile">
-                    <Reservations />
+                    <Reservations
+                        user={user}
+                        PORT={PORT}
+                    />
                 </Route>
                 <Route path="/profile/host">
-                    <Hosts />
+                    <Hosts
+                        user={user}
+                        PORT={PORT}
+                    />
                 </Route>
             </Switch>
 
