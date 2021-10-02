@@ -31,7 +31,7 @@ const Locations = ({ PORT }) => {
                         ", " + property.suite}
                     </p>
                 </Item>
-            ) : <h2>Loading</h2>}
+            ) : <h2>Loading...</h2>}
         </LocationList>
     </LocationWrap>
 };

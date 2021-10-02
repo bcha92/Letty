@@ -158,7 +158,7 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
 
     property === null ?
     <PropertyWrapper>
-        <h2>Loading</h2>
+        <h2>Loading...</h2>
     </PropertyWrapper> :
 
     <ErrorSplash />

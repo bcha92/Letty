@@ -12,7 +12,6 @@ import ErrorSplash from "./components/Error";
 import Homepage from "./components/Homepage";
 import Locations from "./components/Properties";
 import PropertyDetail from "./components/Properties/Property";
-import Hosting from "./components/Properties/Hosting";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Profile from "./components/Profile";
@@ -24,14 +23,6 @@ const App = () => {
     loginWithRedirect, error, isAuthenticated,
     logout, user,// isLoading,
   } = useAuth0();
-  
-//   const [data, setData] = useState(""); // TESTING
-
-//   useEffect(() =>
-//     fetch(PORT)
-//     .then(res => res.json())
-//     .then(data => setData(data))
-// , [setData]);
 
   return (
     <BrowserRouter>
@@ -54,13 +45,6 @@ const App = () => {
       </Route>
       <Route path="/locations/:propertyId">
         <PropertyDetail
-          isAuthenticated={isAuthenticated}
-          user={user}
-          PORT={PORT}
-        />
-      </Route>
-      <Route path="/hosting">
-        <Hosting
           isAuthenticated={isAuthenticated}
           user={user}
           PORT={PORT}

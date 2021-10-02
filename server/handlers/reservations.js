@@ -23,6 +23,7 @@ export const getUserReservations = async (req, res) => {
             res.status(400).json({
                 status: 400,
                 message: `No reservations found for User ID ${userId}.`,
+                data: results,
             })
         }
         // Results if any reservations are found

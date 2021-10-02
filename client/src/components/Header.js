@@ -49,10 +49,7 @@ const Header = ({
                         user.name
                     }</p>
                     <MobileNav exact to="/profile" onClick={closeMenu}>
-                        LETTY Reservations
-                    </MobileNav>
-                    <MobileNav to="/profile/host" onClick={closeMenu}>
-                        LETTY Hosts
+                        Your LETTY Dashboard
                     </MobileNav>
                     <MobileNav to={window.location.origin} onClick={logoutHandle}>
                         Log Out
@@ -135,10 +132,7 @@ const Header = ({
                     />
                     <UserDrop style={{display: userMenu ? "flex": "none"}}>
                         <MobileNav exact to="/profile" onClick={closeMenu}>
-                            LETTY Reservations
-                        </MobileNav>
-                        <MobileNav to="/profile/host" onClick={closeMenu}>
-                            LETTY Hosts
+                            Your LETTY Dashboard
                         </MobileNav>
                         <MobileNav to={window.location.origin} onClick={logoutHandle}>
                             Log Out
