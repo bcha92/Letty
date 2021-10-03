@@ -82,7 +82,10 @@ export const getReservation = async (req, res) => {
 // POST / Book a Reservation
 export const bookReservation = async (req, res) => {
     // Deconstructed req.body
-    const { propertyId, spaceId, dates, charge, cc, cvc } = req.body;
+    const {
+        propertyId, spaceId, dates, charge, cc, cvc,
+        message, reply,
+    } = req.body;
 
     // Check for missing information before starting Mongo
     if (cc.length === 0 || cvc.length === 0) {
@@ -140,7 +143,7 @@ export const bookReservation = async (req, res) => {
         // Once booking dates is finalized, reservation is entered into the system
         const _id = uuidv4(); // new Reservation ID Created
         const newBody = { _id, timestamp: new Date(), ...req.body }; // Format for new Body
-        const newRes = { _id, charge, dates, approved: null }; // Format for Entry in Properties
+        const newRes = { _id, charge, dates, message, reply, approved: null }; // Format for Entry in Properties
 
         await db.collection(reservations).insertOne(newBody); // Insert into Reservation // **Change Here
         await db.collection(properties).updateOne( // Update the Property

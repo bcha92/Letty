@@ -148,12 +148,23 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
         })
     };
 
-    // APPROVE HANDLE FOR OWNER
-    const approveHandle = (propertyId, reservationId) => {};
-    // DENY HANDLE FOR OWNER
-    const denyHandle = (propertyId, reservationId) => {};
-
-    console.log(bookingForm);
+    // Reply State for Owner
+    const [reply, setReply] = useState("");
+    // APPROVE/DENY HANDLE FOR OWNER
+    const approveHandle = (propertyId, reservationId, room, bool, reply) => {
+        fetch(PORT + "/decision", {
+            // PATCH method and Headers
+            method: "PATCH",
+            body: JSON.stringify({
+                propertyId, reservationId, room, bool, reply
+            }),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+        }).then(res => res.json()) // Processing from JSON
+        .then(history.push("/profile"))
+    };
 
     return isLoaded && property !== null ?
     <PropertyWrapper>
@@ -205,9 +216,27 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
                             {room.reservations.map(reservation =>
                             <ResBubble key={reservation._id}>
                                 <h5>Reservation ID: {reservation._id}</h5>
+                                <p><B>Dates:</B> {
+                                    reservation.dates[0] + " to " + reservation.dates[reservation.dates.length - 1]
+                                }</p>
+                                <p><B>Message from User:</B> {reservation.message}</p>
+                                {reservation.approved !== null ? <p><B>Your reply to User:</B> {reservation.reply}</p> :
+                                <MessageBox
+                                    className="reply"
+                                    placeholder="Reply to User"
+                                    onChange={e => setReply(e.target.value)}
+                                />}
                                 <p><B>Status:</B> {
                                 reservation.approved === null ?
-                                <O>PENDING</O> :
+                                <>
+                                    <O>PENDING</O>
+                                    <Button onClick={
+                                        () => approveHandle(property._id, reservation._id, room.id, true, reply)
+                                    }>APPROVE</Button>
+                                    <Button onClick={
+                                        () => approveHandle(property._id, reservation._id, room.id, false, reply)
+                                    }>DENY</Button>
+                                </> :
                                 reservation.approved ?
                                 <G>APPROVED</G> : <R>DENIED</R>
                                 }</p>
@@ -447,6 +476,7 @@ const MessageBox = styled.textarea`
     padding: 10px;
     font-size: 20px;
     min-width: 300px;
+    &.reply {font-size: 16px};
 `;
 
 const ErrBubble = styled.div`

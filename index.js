@@ -13,6 +13,7 @@ import {
 import {
     addProperty, getProperties, getProperty, addRoom,
 } from "./server/handlers/properties.js";
+import { decideBooking } from "./server/handlers/approve.js";
 
 // Local Port to host application || 4000 by default
 const port = process.env.PORT || 4000;
@@ -40,6 +41,9 @@ app.get("/properties/:propertyId", mongokeys, getProperty);
 app.post("/add", mongokeys, addProperty);
 // PATCH / Add a room to a Property
 app.patch("/properties/:propertyId", mongokeys, addRoom);
+
+// PATCH // Approve/Deny Booking by Property ID and Reservation ID
+app.patch("/decision", mongokeys, decideBooking);
 
 // Error Handling
 app.get("*", (req, res) => res.status(400).json(
