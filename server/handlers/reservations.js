@@ -92,6 +92,12 @@ export const bookReservation = async (req, res) => {
             data: req.body,
         })
     }
+    if (dates.length === 0) {
+        return res.status(400).json({
+            status: 400,
+            message: "Please confirm your booking by clicking on submit one more time."
+        })
+    }
 
     // Deconstructed res.locals
     const { options, database, properties, reservations } = res.locals;

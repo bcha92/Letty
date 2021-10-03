@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 // Main Profile Component
 const Profile = ({ user, PORT }) => {
+    let history = useHistory(); // useHistory
     // Get Properties by Owner ID
     const [properties, getProperties] = useState(null);
     useEffect(() => {
@@ -24,8 +25,19 @@ const Profile = ({ user, PORT }) => {
         .then(data => getReservations(data.data))
     }, [PORT, user.sub])
 
-    console.log("PROP", properties)
-    console.log("RESV", reservations);
+    // Delete Reservation Handler
+    const deleteReservation = (reservationId) => {
+        fetch(PORT + `/book/${reservationId}`, {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+        }).then(res => res.json()) // Processing from JSON
+        .then(history.push("/"))
+    }
+
+    console.log(properties);
 
     return <ProfileWrap>
         {/* Main Profile Component */}
@@ -54,11 +66,33 @@ const Profile = ({ user, PORT }) => {
                 {reservations !== null ?
                 reservations.length !== 0 ?
                 reservations.map(prop => 
-                <Item
-                    key={prop._id}
-                    to={`/`}
-                >
-                    <p>Reservation ID: {prop._id}</p>
+                <Item key={prop._id}>
+                    <p><B>Reservation ID:</B> {prop._id}</p>
+                    <p><B>Booking Date:</B> {prop.timestamp.slice(0, 10)}</p>
+                    <p><B>Property:</B> {prop.propertyName}</p>
+                    <p><B>Space Booked:</B> {prop.spaceId}</p>
+                    <p><B>Dates:</B> {prop.dates[0]} to {prop.dates[prop.dates.length - 1]}
+                    </p>
+                    <p><B>Payment Due for this Reservation:</B> ${prop.charge}</p>
+                    <p><B>Message to Owner:</B> {
+                        prop.message.length !== 0 ? prop.message : "<No message>"
+                    }</p>
+                    <p><B>Reply from Owner:</B> {
+                        prop.reply.length !== 0 ? prop.reply : "No reply yet... or the owner chose not to provide a reply message."
+                    }</p>
+                    <B>Status: {
+                        prop.approved === null ? <O>PENDING</O> :
+                        prop.approved ? <G>APPROVED</G> : <R>DECLINED</R>
+                    }</B>
+                    <p><B>
+                        Cancel Booking? {prop.approved === null ?
+                            <O>WARNING! Once you press this button, this action will be irreversible.</O> :
+                            prop.approved ?
+                            <G>Your booking has been approved by the owner and cannot be cancelled by this site. Please contact the owner directly for cancellation or alternative arrangements.</G> :
+                            <R>Your booking has been rejected by the owner. Please press cancel to remove this from your account.</R>
+                        }
+                    </B></p>
+                    {!prop.approved && <Button onClick={() => deleteReservation(prop._id)}>Cancel</Button> /* Cancel Reservation Button */}
                 </Item>
                 ) :
                 <B>
@@ -75,12 +109,12 @@ const Profile = ({ user, PORT }) => {
                 {properties !== null ?
                 properties.length !== 0 ?
                 properties.map(prop =>
-                    <Item
+                    <ItemProp
                         key={prop._id}
                         to={`/locations/${prop._id}`}
                     >
                         <p><B>{prop.name}</B></p>
-                    </Item>
+                    </ItemProp>
                 ) :
                 <B>
                     It looks like you don't have any properties on file.
@@ -121,6 +155,7 @@ const ProfileDetails = styled(ProfileWrap)`
 const B = styled.span`font-weight: bold;`;
 const G = styled(B)`color: green;`;
 const R = styled(B)`color: red;`;
+const O = styled(B)`color: orange;`;
 
 const DivLine = styled.div`
     display: flex;
@@ -143,7 +178,16 @@ const ListWrap = styled(ProfileWrap)`
     margin: 10px;
 `;
 
-const Item = styled(Link)`
+const Item = styled.div`
+    border: 3px solid gray;
+    border-radius: 10px;
+    color: black;
+    padding: 10px;
+    margin: 10px 0;
+    max-width: 700px;
+    `;
+
+const ItemProp = styled(Link)`
     text-decoration: none;
     border: 3px solid gray;
     border-radius: 10px;
@@ -152,5 +196,8 @@ const Item = styled(Link)`
     margin: 10px 0;
     max-width: 700px;
 `;
+
+const Button = styled.button``;
+
 
 export default Profile;
