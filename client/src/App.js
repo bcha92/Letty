@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { PORT } from "./index";
+import { PORT, REACT_APP_GOOGLE_KEY } from "./index";
 
 // Auth0 Context
 import { useAuth0 } from "@auth0/auth0-react";
@@ -42,7 +42,10 @@ const App = () => {
         <Homepage />
       </Route>
       <Route exact path="/locations">
-        <Locations PORT={PORT} />
+        <Locations
+          PORT={PORT}
+          GK={REACT_APP_GOOGLE_KEY}
+        />
       </Route>
       <Route path="/locations/:propertyId">
         <PropertyDetail

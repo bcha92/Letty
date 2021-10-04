@@ -16,6 +16,8 @@
     "mongodb": "^4.1.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.13",
+    "opencage-api-client": "^1.0.0",
+    "react-google-maps": "^9.4.5",
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.3.0",
     "styled-components": "^5.3.1",

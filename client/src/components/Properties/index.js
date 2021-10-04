@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import WrappedMap from "./PropertiesMap";
 
 // Locations Component
-const Locations = ({ PORT }) => {
+const Locations = ({ PORT, GK }) => {
     // Get Properties
     const [list, setList] = useState(null);
 
@@ -14,8 +15,8 @@ const Locations = ({ PORT }) => {
     }, [PORT])
     
     return <LocationWrap>
-        <h2>Locations</h2>
         <LocationList>
+        <h2>Locations</h2>
             {list !== null ? list.map(property =>
                 // List of Properties Iterated in DOM
                 <Item
@@ -31,6 +32,16 @@ const Locations = ({ PORT }) => {
                 </Item>
             ) : <h2>Loading...</h2>}
         </LocationList>
+        <div style={{width: "100%", height: "100vh"}}>
+            <WrappedMap
+                googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GK}`}
+                loadingElement={<div style={{ height: "100%" }} />}
+                containerElement={<div style={{
+                    height: "100%", marginLeft: "20px",
+                }} />}
+                mapElement={<div style={{ height: "100%" }} />}
+            />
+        </div>
     </LocationWrap>
 };
 
@@ -42,6 +53,9 @@ const LocationWrap = styled.div`
     & > h2 {
         font-size: 30px;
         margin-bottom: 20px;
+    };
+    @media (min-width: 769px) {
+        flex-direction: row;
     };
 `;
 

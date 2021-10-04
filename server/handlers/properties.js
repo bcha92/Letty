@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const { MONGO_URI } = process.env;
 
+// UUID For Unique IDs
 import { v4 as uuidv4 } from "uuid";
 
 // GET Properties by user ID
