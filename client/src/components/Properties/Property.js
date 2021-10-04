@@ -94,13 +94,22 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
                             room={room}
                             property={property}
                         />
-                        <OwnerDeleteRoom /></>
+                        <OwnerDeleteRoom
+                            propertyId={property._id}
+                            spaceId={room.id}
+                        /></>
 
                         : isAuthenticated && // Owner Logged In & no Reservations
                         property.owner.userId === user.sub ?
-                        <ResList>
+                        <><ResList>
                             <h4>No reservation has been made for this room yet</h4>
                         </ResList>
+                        <OwnerDeleteRoom
+                            propertyId={property._id}
+                            spaceId={room.id}
+                            history={history}
+                        />
+                        </>
 
                         : isAuthenticated && // Non-owner user Logged In // Book a Room
                         property.owner.userId !== user.sub ?

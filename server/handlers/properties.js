@@ -178,7 +178,7 @@ export const addRoom = async (req, res) => {
 export const removeRoom = async (req, res) => {
     // Property ID and Room ID parameters
     const { propertyId, spaceId } = req.params;
-    const { options, database, properties, reservations, test } = res.locals;
+    const { options, database, properties, reservations } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
@@ -187,20 +187,20 @@ export const removeRoom = async (req, res) => {
         const db = mongo.db(database);
 
         // Find property, update "rooms"
-        const property = await db.collection(test).findOne({ _id: propertyId });
+        const property = await db.collection(properties).findOne({ _id: propertyId });
         let newRooms = [];
         property.rooms.forEach(room => {
             if (room.id !== spaceId) {
                 newRooms.push(room);
             }
         })
-        const newProp = await db.collection(test).updateOne(
+        const newProp = await db.collection(properties).updateOne(
             { _id: propertyId },
             { $set: { "rooms": newRooms }}
         );
 
         // Update Reservations with same property Id and spaceId
-        await db.collection(test).updateMany(
+        await db.collection(reservations).updateMany(
             { propertyId, spaceId },
             { $set: { "approved": false, "reply": "AUTOMATED MESSAGE: The Property Owner has removed the room from the property listing or has been removed by moderators for violating our terms of service agreement." }}
         );
