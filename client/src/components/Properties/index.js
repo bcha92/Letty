@@ -12,8 +12,6 @@ const Locations = ({ PORT }) => {
         .then(res => res.json())
         .then(data => setList(data.data))
     }, [PORT])
-
-    console.log(list);
     
     return <LocationWrap>
         <h2>Locations</h2>

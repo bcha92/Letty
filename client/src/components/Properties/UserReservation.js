@@ -92,8 +92,6 @@ const UserReservation = ({
         })
     };
 
-    console.log(bookForm);
-
     return <BookWrapper>
         <h4
             onClick={() => setShow(!show)}
