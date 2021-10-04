@@ -9,6 +9,7 @@ import ErrorSplash from "../Error";
 // Import Sub-Components
 import OwnerAddRoom from "./OwnerAddRoom";
 import OwnerCheckRes from "./OwnerCheckRes";
+import OwnerDeleteRoom from "./OwnerDeleteRoom";
 import UserReservation from "./UserReservation";
 
 // Property Details Component
@@ -45,6 +46,7 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
                 {property.suite.length !== 0 && ", " + property.suite}
             </h3>
             <p><B>Property ID:</B> {property._id}</p>
+            <p><B>Property Type:</B> {property.type}</p>
 
             {/* Details in Dropdown Menus */}
             <PropWrap>{/* Property Description */}
@@ -67,7 +69,7 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
                 } Features and Site Facilities
                 </B>
                 {showFea && <ul>{property.features.map(
-                    feature => <li>{feature}</li>
+                    (feature, index) => <li key={index}>{feature}</li>
                 )}</ul>}
             </PropWrap>
 
@@ -78,17 +80,21 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
                 <ul className="room">{property.rooms.map(
                     room => <li key={room.id}>
                         <p><B>{room.id}:</B> ${room.rate}/day</p>
+                        <p><B>Max Occupancy:</B> {room.occupancy} { // Max Occupancy of Each Room
+                            room.occupancy === "1" ? "person" : "people"
+                        }</p>
                         {isAuthenticated && // Owner Logged In & has Reservations
                         property.owner.userId === user.sub &&
                         room.reservations.length !== 0 ? // Checks for Reservations
 
                         // OwnerCheckRes.js sub-component
-                        <OwnerCheckRes
+                        <><OwnerCheckRes
                             reservations={room.reservations}
                             history={history}
                             room={room}
                             property={property}
                         />
+                        <OwnerDeleteRoom /></>
 
                         : isAuthenticated && // Owner Logged In & no Reservations
                         property.owner.userId === user.sub ?

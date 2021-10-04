@@ -9,6 +9,7 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
     const initState = {
         name: "", address: "", suite: "", description: "",
         features: [], restrictions: "", images: [], rooms: [],
+        type: "",
         owner: {
             userId: isAuthenticated ? user.sub : null,
             name: isAuthenticated ? user.name : null,
@@ -67,11 +68,30 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
                     onChange={e => setForm({...form, address: e.target.value})}
                     required
                 />
-                <Input // Suite
-                    className="short"
-                    placeholder="Suite"
-                    onChange={e => setForm({...form, suite: e.target.value})}
-                />
+                <div>
+                    <Input // Suite
+                        className="short"
+                        placeholder="Suite"
+                        onChange={e => setForm({...form, suite: e.target.value})}
+                    />
+                    <Select // Type of Property
+                        onChange={e => setForm({...form, type: e.target.value})}
+                        defaultValue=""
+                        required
+                    >
+                        <option value="" disabled>Select Type of Property *</option>
+                        <option value="Art Studio">Art Studio</option>
+                        <option value="Automotive or Garage">Automotive / Garage</option>
+                        <option value="Computer Lab">Computer Lab</option>
+                        <option value="Crafting Workshop">Crafting Workshop</option>
+                        <option value="Fitness">Fitness Center / Studio</option>
+                        <option value="Industrial">Industrial (Other)</option>
+                        <option value="Kitchen">Kitchen and Food Prep</option>
+                        <option value="Health / Medical">Health / Medical</option>
+                        <option value="Office">Office</option>
+                        <option value="Other">Other</option>
+                    </Select>
+                </div>
 
                 <LargeInput // Features
                     placeholder="On-site Features/Amenities (list each seperated by ',', do not add space after ',')"
@@ -156,6 +176,13 @@ const Input = styled.input`
         max-height: 20px;
         max-width: 600px;
     };
+`;
+
+const Select = styled.select`
+    margin: 10px;
+    padding: 10px;
+    max-width: 400px;
+    font-size: 18px;
 `;
 
 const LargeInput = styled.textarea`

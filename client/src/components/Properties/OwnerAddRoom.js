@@ -6,7 +6,7 @@ import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 const OwnerAddRoom = ({ propertyId, history }) => {
     // Add Room Form State
     const initState = {
-        id: "", rate: "", reservations: [],
+        id: "", rate: "0", occupancy: "", reservations: [],
     };
 
     // Show Add Room Tab
@@ -54,7 +54,7 @@ const OwnerAddRoom = ({ propertyId, history }) => {
 
         {// Show/Hide Tab
         show && <div>
-        <p>Please fill out the room name/ID and the daily rate you would like to charge for its use and press submit:</p>
+        <p>Please fill out the room name/ID, maximum occupancy of people for this room, and the daily rate you would like to charge for its use and press submit.</p>
         <AddRoom onSubmit={e => addRoom(e)}>
             <div>
                 <Input // Room Name
@@ -62,14 +62,21 @@ const OwnerAddRoom = ({ propertyId, history }) => {
                     placeholder="Space Name/ID *"
                     required
                 />
+                <Input // Max Occupancy for Room
+                    onChange={e => setAddForm({...addForm, occupancy: e.target.value})}
+                    type="number"
+                    placeholder="Persons *"
+                    className="price"
+                    required
+                />
                 <Input // Daily Room Rate
                     onChange={e => {
                         let value = e.target.value
                         setAddForm({...addForm, rate: value})
                     }}
+                    type="number"
                     placeholder="Rate *"
                     className="price"
-                    type="number"
                     required
                 />
                 <Input

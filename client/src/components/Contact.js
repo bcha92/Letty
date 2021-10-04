@@ -33,7 +33,7 @@ const Contact = ({ isAuthenticated, user }) => {
                     <Entries>
                         <Input // Full Name
                             placeholder="Full Name *"
-                            defaultValue={isAuthenticated ? user.nickname : ""}
+                            defaultValue={isAuthenticated ? user.name : ""}
                             onChange={e => setForm({...form, name: e.target.value})}
                             required
                         />

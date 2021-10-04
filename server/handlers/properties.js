@@ -79,9 +79,11 @@ export const getProperty = async (req, res) => {
 // ADD a Property
 export const addProperty = async (req, res) => {
     // Deconstrcuted req.body
-    const { name, address } = req.body;
+    const { name, address, type } = req.body;
 
-    if (name.length === 0 || address.length === 0) {
+    if (name.length === 0 || address.length === 0 ||
+        type.length === 0
+    ) {
         return res.status(400).json({
             status: 400,
             message: "Missing Information, unable to process",
@@ -118,8 +120,12 @@ export const addProperty = async (req, res) => {
 
 // PATCH // ADD a Room to an Existing Property
 export const addRoom = async (req, res) => {
+    // Deconstructed req.body
+    const { id, occupancy, rate } = req.body;
     // Missing Information Handler // Rate can be 0 and does not need to be checked
-    if (req.body.id.length === 0) {
+    if (id.length === 0 || rate.length === 0 ||
+        occupancy.length === 0
+        ) {
         return res.status(400).json({
             status: 400,
             message: "Missing Information, unable to process",
