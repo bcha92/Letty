@@ -1,20 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // Main Profile Component
 const Profile = ({ user, PORT }) => {
     let history = useHistory(); // useHistory
+
+    // Local States for Cancel Book and Notification
+    const [showCancel, setCancel] = useState(false);
+    const [pending, setPending] = useState(null);
+
     // Get Properties by Owner ID
     const [properties, getProperties] = useState(null);
     useEffect(() => {
         fetch(PORT + "/properties")
         .then(res => res.json())
-        .then(data => getProperties(
+        .then(data => {
+            let penArr = []; // Array for pending status
             data.data.filter(
                 prop => prop.owner.userId === user.sub
-            )
-        ))
+            ).forEach(prop => {
+                prop.rooms.forEach(room => {
+                    room.reservations.forEach(res => {
+                        if (res.approved === null &&
+                            !penArr.includes(prop._id)
+                        ) {penArr.push(prop._id)}
+                    })
+                })
+            })
+            setPending(penArr);
+
+            return getProperties(data.data.filter(
+                prop => prop.owner.userId === user.sub
+            ))
+        })
     }, [PORT, user.sub])
 
     // Get Reservations by User ID
@@ -37,7 +57,7 @@ const Profile = ({ user, PORT }) => {
         .then(history.push("/"))
     }
 
-    console.log(properties);
+    console.log(properties, pending);
 
     return <ProfileWrap>
         {/* Main Profile Component */}
@@ -63,7 +83,7 @@ const Profile = ({ user, PORT }) => {
         <HostWrapper>
             <h3>Your Reservations</h3>
             <ListWrap>
-                {reservations !== null ?
+                {reservations !== null ? // List of your Reservations
                 reservations.length !== 0 ?
                 reservations.map(prop => 
                 <Item key={prop._id}>
@@ -84,15 +104,26 @@ const Profile = ({ user, PORT }) => {
                         prop.approved === null ? <O>PENDING</O> :
                         prop.approved ? <G>APPROVED</G> : <R>DECLINED</R>
                     }</B>
-                    <p><B>
-                        Cancel Booking? {prop.approved === null ?
-                            <O>WARNING! Once you press this button, this action will be irreversible.</O> :
+                    <p className={showCancel && "prop"}>
+                        {prop.approved === null ?
+                            <>
+                                <B className="cursor"
+                                    onClick={() => setCancel(!showCancel)}
+                                >{showCancel ?
+                                    <GoTriangleDown /> : <GoTriangleRight />
+                                } Cancel Booking? </B>
+                                {showCancel && <O>WARNING! Once you press this button, this action will be irreversible.
+                                <Button onClick={() => deleteReservation(prop._id)}>Cancel</Button>
+                                </O>}
+                            </> :
                             prop.approved ?
                             <G>Your booking has been approved by the owner and cannot be cancelled by this site. Please contact the owner directly for cancellation or alternative arrangements.</G> :
-                            <R>Your booking has been rejected by the owner. Please press cancel to remove this from your account.</R>
+                            <R>
+                                Your booking has been rejected by the owner. Please press cancel to remove this from your account.
+                                <Button onClick={() => deleteReservation(prop._id)}>Cancel</Button>
+                            </R>
                         }
-                    </B></p>
-                    {!prop.approved && <Button onClick={() => deleteReservation(prop._id)}>Cancel</Button> /* Cancel Reservation Button */}
+                    </p>
                 </Item>
                 ) :
                 <B>
@@ -106,7 +137,7 @@ const Profile = ({ user, PORT }) => {
         <HostWrapper>
             <h3>Your Properties</h3>
             <ListWrap>
-                {properties !== null ?
+                {properties !== null ? // List of your Hosted Properties
                 properties.length !== 0 ?
                 properties.map(prop =>
                     <ItemProp
@@ -114,6 +145,10 @@ const Profile = ({ user, PORT }) => {
                         to={`/locations/${prop._id}`}
                     >
                         <p><B>{prop.name}</B></p>
+                        <p>{prop.address}</p>
+                        <p>Property ID: <I>{prop._id}</I></p>
+                        {pending.includes(prop._id) &&
+                        <Biv><div /><O>You have pending reservations</O></Biv>}
                     </ItemProp>
                 ) :
                 <B>
@@ -152,10 +187,14 @@ const ProfileDetails = styled(ProfileWrap)`
     };
 `;
 
-const B = styled.span`font-weight: bold;`;
+const B = styled.span`
+    font-weight: bold;
+    &.cursor {cursor: pointer};
+`;
 const G = styled(B)`color: green;`;
 const R = styled(B)`color: red;`;
 const O = styled(B)`color: orange;`;
+const I = styled.span`font-style: italic;`;
 
 const DivLine = styled.div`
     display: flex;
@@ -174,9 +213,7 @@ const HostWrapper = styled(ProfileWrap)`
     };
 `;
 
-const ListWrap = styled(ProfileWrap)`
-    margin: 10px;
-`;
+const ListWrap = styled(ProfileWrap)`margin: 10px;`;
 
 const Item = styled.div`
     border: 3px solid gray;
@@ -185,6 +222,10 @@ const Item = styled.div`
     padding: 10px;
     margin: 10px 0;
     max-width: 700px;
+    & > p.prop {
+        display: flex;
+        flex-direction: column;
+    };
     `;
 
 const ItemProp = styled(Link)`
@@ -197,7 +238,18 @@ const ItemProp = styled(Link)`
     max-width: 700px;
 `;
 
-const Button = styled.button``;
+const Biv = styled(ProfileWrap)`
+    flex-direction: row;
+    align-items: center;
+    & > div {
+        background: orange;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin: 0 10px;
+    };
+`;
 
+const Button = styled.button`margin-left: 10px;`;
 
 export default Profile;
