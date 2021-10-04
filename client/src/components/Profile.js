@@ -11,25 +11,45 @@ const Profile = ({ user, PORT }) => {
     const [showCancel, setCancel] = useState(false);
     const [pending, setPending] = useState(null);
 
+    // Billing States
+    const [payments, setPayments] = useState(0);
+    const [penPay, setPenPay] = useState(0);
+    const [earnings, setEarnings] = useState(0);
+    const [penEarn, setPenEarn] = useState(0);
+
     // Get Properties by Owner ID
     const [properties, getProperties] = useState(null);
     useEffect(() => {
         fetch(PORT + "/properties")
         .then(res => res.json())
         .then(data => {
+            let earning = 0; // Earnings Confirmed
+            let pendEarn = 0; // Earnings Pending
             let penArr = []; // Array for pending status
             data.data.filter(
                 prop => prop.owner.userId === user.sub
             ).forEach(prop => {
                 prop.rooms.forEach(room => {
                     room.reservations.forEach(res => {
+                        // Sets "Pending Status"
                         if (res.approved === null &&
                             !penArr.includes(prop._id)
                         ) {penArr.push(prop._id)}
+
+                        // Sets "Earnings and Pending Earnings"
+                        if (res.approved === null) {
+                            pendEarn += Number(res.charge);
+                        }
+                        // Payments do not include "Declined" transactions
+                        else if (res.approved === false) {
+                            earning += Number(res.charge);
+                        }
                     })
                 })
             })
             setPending(penArr);
+            setEarnings(earning.toFixed(2));
+            setPenEarn(pendEarn.toFixed(2));
 
             return getProperties(data.data.filter(
                 prop => prop.owner.userId === user.sub
@@ -42,8 +62,22 @@ const Profile = ({ user, PORT }) => {
     useEffect(() => {
         fetch(PORT + `/reservations/${user.sub}`)
         .then(res => res.json())
-        .then(data => getReservations(data.data))
-    }, [PORT, user.sub])
+        .then(data => {
+            let payments = 0; // Total Payments Owed
+            let pendPay = 0; // Total Payments Pending
+            data.data.forEach(res => {
+                if (res.approved === null) {
+                    pendPay += Number(res.charge);
+                }
+                else if (res.approved) {
+                    payments += Number(res.charge);
+                }
+            })
+            setPenPay(pendPay.toFixed(2));
+            setPayments(payments.toFixed(2));
+            return getReservations(data.data);
+        })
+    }, [PORT, user.sub, payments])
 
     // Delete Reservation Handler
     const deleteReservation = (reservationId) => {
@@ -56,8 +90,6 @@ const Profile = ({ user, PORT }) => {
         }).then(res => res.json()) // Processing from JSON
         .then(history.push("/"))
     }
-
-    console.log(properties, pending);
 
     return <ProfileWrap>
         {/* Main Profile Component */}
@@ -74,6 +106,20 @@ const Profile = ({ user, PORT }) => {
                 user.email_verified ?
                 <G>VERIFIED</G> : <R>NOT VERIFIED</R>
             }</p>
+            <p><B>Payments Due for Reservations: <R>${payments} </R>
+                +</B><O> ${penPay} PENDING</O>
+            </p>
+            <p><B>Earnings Expected from Properties: <G>${earnings} </G>
+                +</B><O> ${penEarn} PENDING</O>
+            </p>
+            <p><B>
+                Balance: {
+                    Number(earnings) - Number(payments) < 0 ?
+                    <R>-${(Number(earnings) - Number(payments)).toFixed(2)}</R> :
+                    <G>+${(Number(earnings) - Number(payments)).toFixed(2)}</G>
+                } (Pending transactions not included)
+            </B>
+            </p>
             </ProfileDetails>
         </MainProfile>
 
@@ -85,7 +131,7 @@ const Profile = ({ user, PORT }) => {
             <ListWrap>
                 {reservations !== null ? // List of your Reservations
                 reservations.length !== 0 ?
-                reservations.map(prop => 
+                reservations.map(prop =>
                 <Item key={prop._id}>
                     <p><B>Reservation ID:</B> {prop._id}</p>
                     <p><B>Booking Date:</B> {prop.timestamp.slice(0, 10)}</p>
@@ -104,7 +150,7 @@ const Profile = ({ user, PORT }) => {
                         prop.approved === null ? <O>PENDING</O> :
                         prop.approved ? <G>APPROVED</G> : <R>DECLINED</R>
                     }</B>
-                    <p className={showCancel && "prop"}>
+                    <p className={showCancel ? "prop" : ""}>
                         {prop.approved === null ?
                             <>
                                 <B className="cursor"

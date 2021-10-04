@@ -116,7 +116,7 @@ export const addProperty = async (req, res) => {
     mongo.close(); // Disconnect Mongo, end session
 };
 
-// ADD a Room to an Existing Property
+// PATCH // ADD a Room to an Existing Property
 export const addRoom = async (req, res) => {
     // Missing Information Handler // Rate can be 0 and does not need to be checked
     if (req.body.id.length === 0) {
@@ -167,3 +167,48 @@ export const addRoom = async (req, res) => {
     }
     mongo.close(); // Disconnect Mongo, end session
 }
+
+// PATCH // REMOVE Room from an Existing Property and Update Reservations Accordingly
+export const removeRoom = async (req, res) => {
+    // Property ID and Room ID parameters
+    const { propertyId, spaceId } = req.params;
+    const { options, database, properties, reservations, test } = res.locals;
+    const mongo = new MongoClient(MONGO_URI, options);
+
+    try {
+        // Connect Mongo, begin session
+        await mongo.connect();
+        const db = mongo.db(database);
+
+        // Find property, update "rooms"
+        const property = await db.collection(test).findOne({ _id: propertyId });
+        let newRooms = [];
+        property.rooms.forEach(room => {
+            if (room.id !== spaceId) {
+                newRooms.push(room);
+            }
+        })
+        const newProp = await db.collection(test).updateOne(
+            { _id: propertyId },
+            { $set: { "rooms": newRooms }}
+        );
+
+        // Update Reservations with same property Id and spaceId
+        await db.collection(test).updateMany(
+            { propertyId, spaceId },
+            { $set: { "approved": false, "reply": "AUTOMATED MESSAGE: The Property Owner has removed the room from the property listing or has been removed by moderators for violating our terms of service agreement." }}
+        );
+
+        // Return Status and Message Once finished
+        res.status(200).json({
+            status: 204,
+            message: `The Room ${spaceId} listed on Property ID ${propertyId} has been successfully removed. Reservations already with booking with this room has also been cancelled`,
+            data: newProp,
+        })
+    }
+
+    catch (err) {
+        console.log("removeRoom Error:", err);
+    }
+    mongo.close(); // Disconnect Mongo, end session
+};

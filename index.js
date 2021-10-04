@@ -11,7 +11,7 @@ import {
     getUserReservations, getReservation, bookReservation, deleteReservation,
 } from "./server/handlers/reservations.js";
 import {
-    addProperty, getProperties, getProperty, addRoom,
+    addProperty, getProperties, getProperty, addRoom, removeRoom,
 } from "./server/handlers/properties.js";
 import { decideBooking } from "./server/handlers/approve.js";
 
@@ -41,6 +41,8 @@ app.get("/properties/:propertyId", mongokeys, getProperty);
 app.post("/add", mongokeys, addProperty);
 // PATCH / Add a room to a Property
 app.patch("/properties/:propertyId", mongokeys, addRoom);
+// PATCH / Remove a room from a Property
+app.patch("/properties/:propertyId/:spaceId", mongokeys, removeRoom);
 
 // PATCH // Approve/Deny Booking by Property ID and Reservation ID
 app.patch("/decision", mongokeys, decideBooking);
