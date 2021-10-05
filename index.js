@@ -28,7 +28,7 @@ import {
     getUserReservations, getReservation, bookReservation, deleteReservation,
 } from "./server/handlers/reservations.js";
 import {
-    addProperty, getProperties, getProperty, addRoom, removeRoom,
+    addProperty, getProperties, getProperty, addRoom, removeRoom, getImages,
 } from "./server/handlers/properties.js";
 import { decideBooking } from "./server/handlers/approve.js";
 
@@ -41,6 +41,8 @@ app.use(express.json()); // IMPORTANT FOR POST // DO NOT REMOVE
 app.use(morgan("tiny")); // Logger Middleware to log http request errors
 
 // Endpoints
+
+// RESERVATIONS
 // GET List of Reservation by User ID
 app.get("/reservations/:userId", mongokeys, getUserReservations);
 // GET a Reservation by Reservation ID
@@ -50,6 +52,7 @@ app.post("/book", mongokeys, bookReservation);
 // DELETE a Reservation
 app.delete("/book/:reservationId", mongokeys, deleteReservation);
 
+// PROPERTIES
 // GET List of Properties by User ID
 app.get("/properties", mongokeys, getProperties);
 // GET a Property by Property ID
@@ -60,7 +63,10 @@ app.post("/add", mongokeys, addProperty);
 app.patch("/properties/:propertyId", mongokeys, addRoom);
 // PATCH / Remove a room from a Property
 app.patch("/properties/:propertyId/:spaceId", mongokeys, removeRoom);
+// GET // Images from Each Property
+app.get("/images", mongokeys, getImages);
 
+// APPROVES
 // PATCH // Approve/Deny Booking by Property ID and Reservation ID
 app.patch("/decision", mongokeys, decideBooking);
 

@@ -40,6 +40,8 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
         })
     }, [PORT, propertyId])
 
+    console.log(property);
+
     return isLoaded && property !== null ?
     <PropertyWrapper>
         <div>
@@ -54,7 +56,7 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
 
                 <DobWrap>
                 {/* MAP // GOOGLE // PROPERTY LOCAL */}
-                    <div style={{
+                    {/* <div style={{
                         width: "300px", height: "300px", margin: "20px"
                     }}>
                         <LocationsMap
@@ -64,7 +66,7 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
                             mapElement={<div style={{ height: "100%" }} />}
                             properties={[property]}
                         />
-                    </div>
+                    </div> */}
 
                     {/* Image Carousel */}
                     <ImageCarousel images={property.images} />

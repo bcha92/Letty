@@ -37,7 +37,7 @@ const LocationsMap = withScriptjs(withGoogleMap(({ properties, zoom=15, setSelec
         )}
 
         {/* Information Window on Click */}
-        {location !== null && (
+        {location !== null && 
             <InfoWindow
                 position={location.geo === undefined ?
                     { lat: 45.49496410858361, lng: -73.57789133761398 } :
@@ -59,7 +59,7 @@ const LocationsMap = withScriptjs(withGoogleMap(({ properties, zoom=15, setSelec
                     >View Property</View>}
                 </div>
             </InfoWindow>
-        )}
+        }
         </GoogleMap>
 }));
 
