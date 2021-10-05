@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import WrappedMap from "./PropertyMap";
+import LocationsMap from "./PropertyMap";
 
 // Locations Component
 const Locations = ({ PORT, GK }) => {
@@ -35,13 +35,14 @@ const Locations = ({ PORT, GK }) => {
 
         {/* MAP // GOOGLE MAP // AREA */}
         <div style={{width: "100%", height: "80vh"}}>
-            <WrappedMap
+            <LocationsMap
                 googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GK}`}
                 loadingElement={<div style={{ height: "100%" }} />}
                 containerElement={<div style={{
                     height: "100%", marginLeft: "20px",
                 }} />}
                 mapElement={<div style={{ height: "100%" }} />}
+                properties={list !== null && list}
             />
         </div>
 
