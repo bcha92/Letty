@@ -62,6 +62,7 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
                             loadingElement={<div style={{ height: "100%" }} />}
                             containerElement={<div style={{ height: "100%" }} />}
                             mapElement={<div style={{ height: "100%" }} />}
+                            properties={[property]}
                         />
                     </div>
 

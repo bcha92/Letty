@@ -6,7 +6,6 @@ import NoPreview from "./no-preview.jpeg";
 // requires a loader
 
 const ImageCarousel = ({images=[]}) => {
-    console.log(images)
     return <CarouselWrap
         showArrows={true}
         width="400px"
