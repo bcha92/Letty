@@ -42,7 +42,7 @@ const Locations = ({ PORT, GK }) => {
                     height: "100%", marginLeft: "20px",
                 }} />}
                 mapElement={<div style={{ height: "100%" }} />}
-                properties={list !== null && list}
+                properties={list !== null ? list : []}
             />
         </div>
 
