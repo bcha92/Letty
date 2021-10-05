@@ -164,8 +164,8 @@ const Entries = styled.div` // Form Input Set
     @media (min-width: 769px) {
         flex-flow: row wrap;
         justify-content: space-between;
+        align-items: flex-end;
         & > input {min-width: 300px};
-        align-items: center;
     }
 `;
 
@@ -179,6 +179,7 @@ const Input = styled.input` // Input Fields
 const Submit = styled.input` // Submit Button
     padding: 10px;
     flex: 1;
+    margin: 10px 10px;
 `;
 
 const Notes = styled.textarea` // Text Area
@@ -187,6 +188,10 @@ const Notes = styled.textarea` // Text Area
     font-size: 20px;
     width: 100%;
     flex: 2;
+    @media (max-width: 768px) {
+        max-width: 270px;
+        resize: none;
+    };
 `;
 
 const Select = styled.select` // Dropdown Select

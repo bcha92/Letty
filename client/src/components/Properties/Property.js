@@ -11,9 +11,11 @@ import OwnerAddRoom from "./OwnerAddRoom";
 import OwnerCheckRes from "./OwnerCheckRes";
 import OwnerDeleteRoom from "./OwnerDeleteRoom";
 import UserReservation from "./UserReservation";
+import LocationsMap from "./PropertyMap";
+import ImageCarousel from "./ImageCarousel";
 
 // Property Details Component
-const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
+const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
     let history = useHistory(); // Redirect history
     const { propertyId } = useParams(); // Property ID parameter
 
@@ -35,44 +37,66 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
                 setLoaded(true);
             }
             setProperty(data.data);
-        })}, [PORT, propertyId])
+        })
+    }, [PORT, propertyId])
 
     return isLoaded && property !== null ?
     <PropertyWrapper>
-        <PropertyInfo>{/* Current Property Information */}
-            <h2>{property.name}</h2>
-            <h3>
-                {property.address}
-                {property.suite.length !== 0 && ", " + property.suite}
-            </h3>
-            <p><B>Property ID:</B> {property._id}</p>
-            <p><B>Property Type:</B> {property.type}</p>
+        <div>
+            <PropertyInfo>{/* Current Property Information */}
+                <h2>{property.name}</h2>
+                <h3>
+                    {property.address}
+                    {property.suite.length !== 0 && ", " + property.suite}
+                </h3>
+                <p><B>Property ID:</B> {property._id}</p>
+                <p><B>Property Type:</B> {property.type}</p>
 
-            {/* Details in Dropdown Menus */}
-            <PropWrap>{/* Property Description */}
-                <B onClick={() => setDes(!showDes)}>{
-                    showDes ? <GoTriangleDown /> : <GoTriangleRight />
-                } Property Description
-                </B>
-                {showDes && <p>{property.description}</p>}
-            </PropWrap>
-            <PropWrap>{/* Property Rules and Restrictions */}
-                <B onClick={() => setRes(!showRes)}>{
-                    showRes ? <GoTriangleDown /> : <GoTriangleRight />
-                } Rules and Restrictions
-                </B>
-                {showRes && <p>{property.restrictions}</p>}
-            </PropWrap>
-            <PropWrap>{/* Property Features List */}
-                <B onClick={() => setFea(!showFea)}>{
-                    showFea ? <GoTriangleDown /> : <GoTriangleRight />
-                } Features and Site Facilities
-                </B>
-                {showFea && <ul>{property.features.map(
-                    (feature, index) => <li key={index}>{feature}</li>
-                )}</ul>}
-            </PropWrap>
+                <DobWrap>
+                {/* MAP // GOOGLE // PROPERTY LOCAL */}
+                    <div style={{
+                        width: "300px", height: "300px", margin: "20px"
+                    }}>
+                        <LocationsMap
+                            googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GK}`}
+                            loadingElement={<div style={{ height: "100%" }} />}
+                            containerElement={<div style={{ height: "100%" }} />}
+                            mapElement={<div style={{ height: "100%" }} />}
+                        />
+                    </div>
 
+                    {/* Image Carousel */}
+                    <ImageCarousel images={property.images} />
+                </DobWrap>
+
+                {/* Details in Dropdown Menus */}
+                <PropWrap>{/* Property Description */}
+                    <B onClick={() => setDes(!showDes)}>{
+                        showDes ? <GoTriangleDown /> : <GoTriangleRight />
+                    } Property Description
+                    </B>
+                    {showDes && <p>{property.description}</p>}
+                </PropWrap>
+                <PropWrap>{/* Property Rules and Restrictions */}
+                    <B onClick={() => setRes(!showRes)}>{
+                        showRes ? <GoTriangleDown /> : <GoTriangleRight />
+                    } Rules and Restrictions
+                    </B>
+                    {showRes && <p>{property.restrictions}</p>}
+                </PropWrap>
+                <PropWrap>{/* Property Features List */}
+                    <B onClick={() => setFea(!showFea)}>{
+                        showFea ? <GoTriangleDown /> : <GoTriangleRight />
+                    } Features and Site Facilities
+                    </B>
+                    {showFea && <ul>{property.features.map(
+                        (feature, index) => <li key={index}>{feature}</li>
+                    )}</ul>}
+                </PropWrap>
+            </PropertyInfo>
+        </div>
+
+        <div>
             <PropWrap>{/* Availability of Rooms // Add Rooms if Admin */}
                 <B className="rooms">
                     Available Spaces on LETTY
@@ -158,7 +182,7 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
                     <p><B>Email:</B> {property.owner.email}</p>
                 </>}
             </PropWrap>}
-        </PropertyInfo>
+        </div>
     </PropertyWrapper> :
 
     property === null ?
@@ -172,25 +196,30 @@ const PropertyDetail = ({ isAuthenticated, user, PORT }) => {
 const PropertyWrapper = styled.div`
     display: flex;
     flex-flow: column wrap;
+    @media (min-width: 1000px) {
+        display: flex;
+        flex-direction: row;
+        & > div {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        };
+    };
 `;
 
-const PropertyInfo = styled(PropertyWrapper)`
-    padding: 20px;
-    & > h3 {margin-bottom: 20px};
+const PropertyInfo = styled.div`
+    display: flex;
+    flex-flow: column wrap;
+    padding: 10px;
+    & > h3 {margin-bottom: 10px};
 `;
 
-const PropWrap = styled(PropertyWrapper)`
-    margin: 10px 0;
+const PropWrap = styled(PropertyInfo)`
     & > span {
         cursor: pointer;
         &.rooms {cursor: inherit};
     };
-    & > p {
-        margin-left: 20px;
-        &.fill {
-            margin: 10px
-        };
-    };
+    & > p {margin-left: 20px};
     & > ul {
         margin-left: 40px;
         &.room {
@@ -202,12 +231,20 @@ const PropWrap = styled(PropertyWrapper)`
                 border-radius: 10px;
                 margin: 5px 0;
                 max-width: 700px;
-            }
-        }
+            };
+        };
+    };
+`;
+
+const DobWrap = styled(PropertyInfo)`
+    @media (min-width: 769px) {
+        flex-direction: row;
     };
 `;
 
 const ResList = styled.div`& > h4 {margin: 5px 0};`;
-const B = styled.span`font-weight: bold;`;
+const B = styled.span`
+    font-weight: bold;
+`;
 
 export default PropertyDetail;

@@ -52,6 +52,7 @@ const App = () => {
           isAuthenticated={isAuthenticated}
           user={user}
           PORT={PORT}
+          GK={REACT_APP_GOOGLE_KEY}
         />
       </Route>
       <Route path="/hosting">

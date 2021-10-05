@@ -106,12 +106,18 @@ const Profile = ({ user, PORT }) => {
                 user.email_verified ?
                 <G>VERIFIED</G> : <R>NOT VERIFIED</R>
             }</p>
-            <p><B>Payments Due for Reservations: <R>${payments} </R>
-                +</B><O> ${penPay} PENDING</O>
-            </p>
-            <p><B>Earnings Expected from Properties: <G>${earnings} </G>
-                +</B><O> ${penEarn} PENDING</O>
-            </p>
+            <p>{// Payments for Reservations
+                penPay !== "0.00" ?
+                <B>Payments Due for Reservations: <R>${payments} </R>
+                +<O> ${penPay} PENDING</O></B> :
+                <B>Payments Due for Reservations: <R>${payments} </R></B>
+            }</p>
+            <p>{// Earnings for Reservations
+                penEarn !== "0.00" ?
+                <B>Earnings Expected from Properties: <G>${earnings} </G>
+                +<O> ${penEarn} PENDING</O></B> :
+                <B>Earnings Expected from Properties: <G>${earnings} </G></B>
+            }</p>
             <p><B>
                 Balance: {
                     Number(earnings) - Number(payments) < 0 ?
@@ -227,10 +233,8 @@ const MainProfile = styled(ProfileWrap)`
 
 const ProfileDetails = styled(ProfileWrap)`
     flex-wrap: wrap;
+    padding: 50px;
     & > p {font-size: 20px};
-    @media (min-width: 769px) {
-        max-width: 400px
-    };
 `;
 
 const B = styled.span`
@@ -259,29 +263,43 @@ const HostWrapper = styled(ProfileWrap)`
     };
 `;
 
-const ListWrap = styled(ProfileWrap)`margin: 10px;`;
+const ListWrap = styled(ProfileWrap)`
+    margin: 10px;
+    @media (min-width: 769px) {
+        display: flex;
+        flex-flow: row wrap;
+    };
+`;
 
 const Item = styled.div`
     border: 3px solid gray;
     border-radius: 10px;
     color: black;
-    padding: 10px;
+    padding: 20px;
     margin: 10px 0;
     max-width: 700px;
     & > p.prop {
         display: flex;
         flex-direction: column;
     };
-    `;
+    @media (min-width: 769px) {
+        min-width: 600px;
+        margin-right: 20px;
+    }
+`;
 
 const ItemProp = styled(Link)`
     text-decoration: none;
     border: 3px solid gray;
     border-radius: 10px;
     color: black;
-    padding: 10px;
+    padding: 20px;
     margin: 10px 0;
     max-width: 700px;
+    @media (min-width: 769px) {
+        margin-right: 20px;
+        min-width: 600px;
+    };
 `;
 
 const Biv = styled(ProfileWrap)`

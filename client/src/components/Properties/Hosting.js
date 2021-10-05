@@ -58,48 +58,52 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
             <p>Please fill out as much detail about your property.</p>
             <N><R>*</R> Required Fields</N>
             <Form onSubmit={registerProperty}>
-                <Input // Property Name
-                    placeholder="Property Name *"
-                    onChange={e => setForm({...form, name: e.target.value})}
-                    required
-                />
-                <Input // Address
-                    placeholder="Address (123 Main St Montreal H0H 0H0) *"
-                    onChange={e => setForm({...form, address: e.target.value})}
-                    required
-                />
                 <div>
-                    <Input // Suite
-                        className="short"
-                        placeholder="Suite"
-                        onChange={e => setForm({...form, suite: e.target.value})}
-                    />
-                    <Select // Type of Property
-                        onChange={e => setForm({...form, type: e.target.value})}
-                        defaultValue=""
-                        required
-                    >
-                        <option value="" disabled>Select Type of Property *</option>
-                        <option value="Art Studio">Art Studio</option>
-                        <option value="Automotive or Garage">Automotive / Garage</option>
-                        <option value="Computer Lab">Computer Lab</option>
-                        <option value="Crafting Workshop">Crafting Workshop</option>
-                        <option value="Fitness">Fitness Center / Studio</option>
-                        <option value="Industrial">Industrial (Other)</option>
-                        <option value="Kitchen">Kitchen and Food Prep</option>
-                        <option value="Health / Medical">Health / Medical</option>
-                        <option value="Office">Office</option>
-                        <option value="Other">Other</option>
-                    </Select>
-                </div>
+                    <div>
+                        <Input // Property Name
+                            placeholder="Property Name *"
+                            onChange={e => setForm({...form, name: e.target.value})}
+                            required
+                        />
+                        <Input // Address
+                            placeholder="Address (123 Main St Montreal H0H 0H0) *"
+                            onChange={e => setForm({...form, address: e.target.value})}
+                            required
+                        />
+                        <div>
+                            <Input // Suite
+                                className="short"
+                                placeholder="Suite"
+                                onChange={e => setForm({...form, suite: e.target.value})}
+                            />
+                            <Select // Type of Property
+                                onChange={e => setForm({...form, type: e.target.value})}
+                                defaultValue=""
+                                required
+                            >
+                                <option value="" disabled>Select Type of Property *</option>
+                                <option value="Art Studio">Art Studio</option>
+                                <option value="Automotive or Garage">Automotive / Garage</option>
+                                <option value="Computer Lab">Computer Lab</option>
+                                <option value="Crafting Workshop">Crafting Workshop</option>
+                                <option value="Fitness">Fitness Center / Studio</option>
+                                <option value="Industrial">Industrial (Other)</option>
+                                <option value="Kitchen">Kitchen and Food Prep</option>
+                                <option value="Health / Medical">Health / Medical</option>
+                                <option value="Office">Office</option>
+                                <option value="Other">Other</option>
+                            </Select>
+                        </div>
+                    </div>
 
-                <LargeInput // Features
-                    placeholder="On-site Features/Amenities (list each seperated by ',', do not add space after ',')"
-                    onChange={e => {
+                    <LargeInput // Features
+                        className="features"
+                        placeholder="On-site Features/Amenities (list each seperated by ',', do not add space after ',')"
+                        onChange={e => {
                         let features = (e.target.value).split(",")
                         setForm({...form, features});
-                    }}
-                />
+                    }}/>
+                </div>
                 <LargeInput // Description
                     placeholder="Description of Property"
                     onChange={e => setForm({...form, description: e.target.value})}
@@ -152,6 +156,14 @@ const Form = styled.form`
     & > h4 {margin: 10px 0};
     @media (min-width: 769px) {
         flex-direction: column;
+        & > div {
+            display: flex;
+            flex-direction: row;
+            & > div {
+                display: flex;
+                flex-direction: column;
+            };
+        };
     }
 `;
 
@@ -190,8 +202,15 @@ const LargeInput = styled.textarea`
     padding: 10px;
     font-size: 20px;
     flex: 1;
-    min-width: 400px;
     min-height: 100px;
+    @media (max-width: 768px) {
+        resize: none;
+        max-width: 400px;
+        &.features {min-width: 400px};
+    };
+    @media (min-width: 769px) {
+        min-height: 150px;
+    };
 `;
 
 const R = styled.span`color: red;`;
