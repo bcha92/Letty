@@ -3,6 +3,23 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 
+// Opencage API and getPosition function
+import opencage from "opencage-api-client";
+import dotenv from "dotenv";
+dotenv.config();
+
+export const getPosition = async (address, key) => {
+    // Geocode
+    const requestObj = { key, q: address };
+
+    try { // Await Opencage Data
+        const data = await opencage.geocode(requestObj);
+        return data.results[0].geometry;
+    } catch (err) {
+        console.log("getPositionError:", err);
+    }
+};
+
 //Middleware Import
 import mongokeys from "./server/MongoMiddleware.js";
 

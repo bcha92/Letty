@@ -1,9 +1,10 @@
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 dotenv.config();
-const { MONGO_URI } = process.env;
+const { MONGO_URI, OPENCAGE_API_KEY } = process.env;
+import { getPosition } from "../../index.js";
 
-// UUID For Unique IDs
+// import 
 import { v4 as uuidv4 } from "uuid";
 
 // GET Properties by user ID
@@ -97,12 +98,22 @@ export const addProperty = async (req, res) => {
     const mongo = new MongoClient(MONGO_URI, options);
 
     try {
+        // Geocode Position
+        const geo = await getPosition(address, OPENCAGE_API_KEY);
+        if (geo.lat === undefined || geo.lng === undefined) {
+            return res.status(400).json({
+                status: 400,
+                message: "Missing Information, unable to process",
+                geo, data: req.body,
+            })
+        }
+
         // Connect Mongo, begin session
         await mongo.connect();
         const db = mongo.db(database);
 
         // Add property to database
-        const newProperty = { _id: uuidv4(), registered: new Date(), ...req.body };
+        const newProperty = { _id: uuidv4(), registered: new Date(), geo, ...req.body };
         await db.collection(properties).insertOne(newProperty);
 
         // Return res.status once property is added

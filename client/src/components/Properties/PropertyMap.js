@@ -4,39 +4,54 @@ import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow } from "reac
 import styled from "styled-components";
 
 // Map of Locations
-const LocationsMap = withScriptjs(withGoogleMap(({ properties }) => {
+const LocationsMap = withScriptjs(withGoogleMap(({ properties, zoom=15, setSelect }) => {
     // Set Location on Marker Click State
     const [location, setLocation] = useState(null);
     // UseHistory Redirect Link {May need to borrow from parent state (Property)}
     let history = useHistory();
 
     return <GoogleMap // Default rendering of Google Maps
-        defaultZoom={15}
-        defaultCenter={properties === undefined ?
+        defaultZoom={zoom}
+        defaultCenter={properties.length > 1 ?
             // If geo is undefined, default lat/lng to Concordia University, Montreal
             { lat: 45.49496410858361, lng: -73.57789133761398 } :
-            { lat: 45.49496410858361, lng: -73.57789133761398 } // properties[0].geo
+            properties[0].geo
         }
         >
 
         {/* Shows a list of properties (or property) */}
-        {properties !== undefined && properties.length !== 0 &&
+        {
         properties.map(property =>
             <Marker
             key={property._id}
-            position={{ lat: 45.49496410858361, lng: -73.57789133761398 }/* property.geo */} // Lat/Lng
-            onClick={() => setLocation(property)}
+            position={property.geo === undefined ? // Address Converted from Lat
+                { lat: 45.49496410858361, lng: -73.57789133761398 } :
+                property.geo}
+            onClick={() => {
+                setLocation(property);
+                if (properties.length > 1) { // Prevents error when clicking
+                    setSelect(property._id);
+                }
+            }}
             />
         )}
 
         {/* Information Window on Click */}
         {location !== null && (
             <InfoWindow
-        position={{ lat: 45.49496410858361, lng: -73.57789133761398 } /* property.geo */}
-        onCloseClick={() => setLocation(null)}
+                position={location.geo === undefined ?
+                    { lat: 45.49496410858361, lng: -73.57789133761398 } :
+                    location.geo}
+                onCloseClick={() => {
+                    setLocation(null);
+                    if (properties.length > 1) {
+                        setSelect(null);
+                    }
+                }}
             >
                 <div>
                     <h3>{location.name}</h3>
+                    <p>{location.type}</p>
                     <p>{location.address}</p>
                     {properties.length > 1 &&
                     <View className="blue"

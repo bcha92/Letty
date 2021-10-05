@@ -7,13 +7,16 @@ import LocationsMap from "./PropertyMap";
 const Locations = ({ PORT, GK }) => {
     // Get Properties
     const [list, setList] = useState(null);
+    const [select, setSelect] = useState(null);
 
     useEffect(() => {
         fetch(PORT + "/properties")
         .then(res => res.json())
         .then(data => setList(data.data))
     }, [PORT])
-    
+
+    console.log(list);
+
     return <LocationWrap>
         <LocationList>
         <h2>Locations</h2>
@@ -22,6 +25,7 @@ const Locations = ({ PORT, GK }) => {
                 <Item
                     key={property._id}
                     to={`/locations/${property._id}`}
+                    className={select === property._id && "selected"}
                 >
                     <h2>{property.name}</h2>
                     <p>
@@ -34,7 +38,7 @@ const Locations = ({ PORT, GK }) => {
         </LocationList>
 
         {/* MAP // GOOGLE MAP // AREA */}
-        <div style={{width: "100%", height: "80vh"}}>
+        {list !== null && <div style={{width: "100%", height: "80vh"}}>
             <LocationsMap
                 googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GK}`}
                 loadingElement={<div style={{ height: "100%" }} />}
@@ -42,9 +46,11 @@ const Locations = ({ PORT, GK }) => {
                     height: "100%", marginLeft: "20px",
                 }} />}
                 mapElement={<div style={{ height: "100%" }} />}
-                properties={list !== null ? list : []}
+                properties={list}
+                zoom={14}
+                setSelect={setSelect}
             />
-        </div>
+        </div>}
 
     </LocationWrap>
 };
@@ -76,6 +82,9 @@ const Item = styled(Link)`
     padding: 10px;
     margin: 10px 0;
     max-width: 700px;
+    &.selected {
+        border: 4px solid dodgerblue;
+    };
 `;
 
 export default Locations;
