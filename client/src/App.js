@@ -1,10 +1,8 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { PORT, REACT_APP_GOOGLE_KEY } from "./index";
-
+import { PORT } from "./index";
 // Auth0 Context
 import { useAuth0 } from "@auth0/auth0-react";
-
 // Components
 import GlobalStyles from "./GlobalStyles";
 import Header from "./components/Header";
@@ -19,11 +17,11 @@ import Contact from "./components/Contact";
 import Profile from "./components/Profile";
 
 // Main App Component
-const App = () => {
+const App = ({ GK }) => {
   // Auth0 Login Redirect Handler
   const {
     loginWithRedirect, error, isAuthenticated,
-    logout, user,// isLoading,
+    logout, user,
   } = useAuth0();
 
   return (
@@ -45,7 +43,7 @@ const App = () => {
       <Route exact path="/locations">
         <Locations
           PORT={PORT}
-          GK={REACT_APP_GOOGLE_KEY}
+          GK={GK}
         />
       </Route>
       <Route path="/locations/:propertyId">
@@ -53,7 +51,7 @@ const App = () => {
           isAuthenticated={isAuthenticated}
           user={user}
           PORT={PORT}
-          GK={REACT_APP_GOOGLE_KEY}
+          GK={GK}
         />
       </Route>
       <Route path="/hosting">

@@ -10,7 +10,7 @@ const HostingIntro = ({ loginWithRedirect }) => {
         <p>We are merely facilitators between users seeking short-term rentals of commercial properties to conduct businesses or simply engage in hobby work.</p>
         <p>We don't believe in punishing service charges if you can't find renters for your properties.</p>
         <h3>You only pay when you get paid.</h3>
-        <p>So what are you waiting for? LETTY-us get started!</p>
+        <p>So what are you waiting for? Join our ranks as owner-operators and LETTY-us get started!</p>
         <button onClick={() => loginWithRedirect()}>Login</button>
     </HostWrap>
 };
@@ -29,6 +29,9 @@ const HostWrap = styled.div`
     & > p {
         font-size: 20px;
         margin-top: 5px;
+    };
+    @media (min-width: 769px) {
+        max-width: 45%;
     };
 `;
 

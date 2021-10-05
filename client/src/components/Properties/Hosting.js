@@ -140,7 +140,7 @@ const HostingSplash = styled(HostWrap)`
         font-size: 30px;
         margin-bottom: 20px;
     };
-    `;
+`;
 
 const Form = styled.form`
     margin-top: 10px;
