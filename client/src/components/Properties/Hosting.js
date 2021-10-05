@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 
-// Hosting Component
-const Hosting = ({ isAuthenticated, user, PORT }) => {
+// Hosting Component (for Authorized Users Only)
+const Hosting = ({ user, PORT }) => {
     let history = useHistory();
     // Property Registration Form Initial State
     const initState = {
@@ -11,9 +11,9 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
         features: [], restrictions: "", images: [], rooms: [],
         type: "",
         owner: {
-            userId: isAuthenticated ? user.sub : null,
-            name: isAuthenticated ? user.name : null,
-            email: isAuthenticated ? user.email : null,
+            userId: user.sub,
+            name: user.name,
+            email: user.email,
         },
     };
 
@@ -51,8 +51,7 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
         })
     }
 
-    return (isAuthenticated ?
-    <HostWrap>{/* Hosting page for Authenticated Users */}
+    return <HostWrap>{/* Hosting page for Authenticated Users */}
         <HostingSplash>
             <h2>Register your Property</h2>
             <p>Please fill out as much detail about your property.</p>
@@ -126,13 +125,7 @@ const Hosting = ({ isAuthenticated, user, PORT }) => {
                 />
             </Form>
         </HostingSplash>
-    </HostWrap> :
-
-    <HostWrap>{/* Splash page for Non-Authenticated Users */}
-        <HostingSplash>
-            <h2>Host your Property with Ease!</h2>
-        </HostingSplash>
-    </HostWrap>)
+    </HostWrap>
 };
 
 // Styled Components

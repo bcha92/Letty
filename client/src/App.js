@@ -12,6 +12,7 @@ import ErrorSplash from "./components/Error";
 import Homepage from "./components/Homepage";
 import Locations from "./components/Properties";
 import PropertyDetail from "./components/Properties/Property";
+import HostingIntro from "./components/HostIntro";
 import Hosting from "./components/Properties/Hosting";
 import About from "./components/About";
 import Contact from "./components/Contact";
@@ -56,11 +57,12 @@ const App = () => {
         />
       </Route>
       <Route path="/hosting">
-        <Hosting
+        {isAuthenticated ? <Hosting
+          loginWithRedirect={loginWithRedirect}
           isAuthenticated={isAuthenticated}
           user={user}
           PORT={PORT}
-        />
+        /> : <HostingIntro loginWithRedirect={loginWithRedirect} /> }
       </Route>
 
       {/* About/Contact */}
