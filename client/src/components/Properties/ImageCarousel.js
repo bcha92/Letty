@@ -21,8 +21,8 @@ const ImageCarousel = ({images=[]}) => {
             }} />
         </div> :
         images.map((image, index) =>
-        <div>
-            <img src={image} alt={`${image}_${index}`} style={{
+        <div key={`image_${index}`}>
+            <img src={image} alt={`image_${index}`} style={{
                 width: "400px"
             }} />
         </div>)}

@@ -82,6 +82,12 @@ const Button = styled.button`
     margin-top: 30px;
     max-width: 200px;
     border-radius: 10px;
+    transition: 300ms ease-in-out;
+    &:hover {
+        background: skyblue;
+        transition: 500ms ease-in-out;
+        transform: scale(110%);
+    };
     animation: ${fadeIn} 2100ms linear;
 `;
 

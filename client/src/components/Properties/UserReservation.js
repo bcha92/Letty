@@ -64,9 +64,10 @@ const UserReservation = ({
     // Add Reservation Handler States
     const [status, setStatus] = useState("idle");
     const [message, setMessage] = useState("");
+    const [load, setLoad] = useState(false);
 
     // Handle Reservation Booking
-    const handleReservation = (room) => {
+    const handleReservation = () => {
         setStatus("processing");
         fetch("../book", {
             // POST method and headers
@@ -92,8 +93,28 @@ const UserReservation = ({
         })
     };
 
+    // Check Room Availability
+    const checkRooms = () => {
+        setLoad(true);
+        fetch("../checkRooms", {
+            // POST method and headers
+            method: "POST",
+            body: JSON.stringify(bookForm),
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+        }).then(res => res.json())
+        .then(json => { // Deconstructed Status/Message
+            const { status, message } = json;
+            setVerify(status === 200 ? true : false);
+            setWarn(message);
+            setLoad(false);
+        })
+    };
+
     return <BookWrapper>
-        <h4
+        <h4 // OnClick opens drop-down of booking a reservation
             onClick={() => setShow(!show)}
             style={{cursor: "pointer"}}
         >
@@ -103,7 +124,7 @@ const UserReservation = ({
         {show && <AddRoom
             onSubmit={e => {
                 e.preventDefault();
-                handleReservation(room);
+                handleReservation();
             }}
             className="datebook"
         >
@@ -124,29 +145,28 @@ const UserReservation = ({
                 max={startDay !== "" ? maxDay(startDay) : startDay}
                 required
             />
-            <Input // Date Lock In
+            <Input // Check Date
                 type="button"
                 className={verify ? "submit change" : "submit"}
-                value={verify ? "Change Dates?" : "Set Dates"}
+                value={load ? "Checking..." : verify ? "Change Dates?" : "Set Dates"}
                 onClick={() => {
                     if (startDay.length === 0 ||
                     endDay.length === 0) {
                         setWarn("Please indicate which dates you want to book and 'Select Dates' again")
                     }
+                    else if (verify) {
+                        setVerify(false);
+                        setWarn("");
+                    }
                     else {
                         dateArray(startDay, endDay);
-                        setVerify(!verify);
-                        if (verify) {
-                            setWarn("");
-                        }
-                        else {
-                            setWarn("Your dates have been set (not verified). Please continue with your booking.")
-                        }
+                        checkRooms();
                     }
                 }}
             />
-            {verify ? <><G>{warn}</G>
+            {verify ? <G>{warn}</G> : <R>{warn}</R>}
 
+            {verify && <>
             <Input // Credit Card #
                 type="number"
                 placeholder="Credit Card *"
@@ -167,17 +187,17 @@ const UserReservation = ({
                 onChange={e => setBookForm({...bookForm, message: e.target.value})}
                 disabled={verify ? false : true}
                 />
-            <Input
+            <Input // Submit Button
                 type="submit"
                 className="submit"
                 disabled={verify ? false : true}
-                />
+            />
             {status === "error" &&
             <ErrBubble>
                 <p>{message}</p>
             </ErrBubble>}
 
-            </> : <O>{warn}</O>}
+            </>}
         </AddRoom>}
     </BookWrapper>
 };
@@ -250,5 +270,6 @@ const O = styled.span`
     color: orange;
 `;
 const G = styled(O)`color: green;`;
+const R = styled(G)`color: red;`;
 
 export default UserReservation;

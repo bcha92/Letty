@@ -40,8 +40,6 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
         })
     }, [PORT, propertyId])
 
-    console.log(property);
-
     return isLoaded && property !== null ?
     <PropertyWrapper
         style={{ background: property.images.length === 0 ? "white" : `white url(${property.images[

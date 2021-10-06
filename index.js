@@ -30,7 +30,7 @@ import {
 import {
     addProperty, getProperties, getProperty, addRoom, removeRoom, getImages,
 } from "./server/handlers/properties.js";
-import { decideBooking } from "./server/handlers/approve.js";
+import { decideBooking, checkRooms } from "./server/handlers/approve.js";
 
 // Local Port to host application || 4000 by default
 const port = process.env.PORT || 4000;
@@ -51,6 +51,8 @@ app.get("/reservations/:userId/:reservationId", mongokeys, getReservation);
 app.post("/book", mongokeys, bookReservation);
 // DELETE a Reservation
 app.delete("/book/:reservationId", mongokeys, deleteReservation);
+// POST / Check availability of Rooms
+app.post("/checkRooms", mongokeys, checkRooms);
 
 // PROPERTIES
 // GET List of Properties by User ID
