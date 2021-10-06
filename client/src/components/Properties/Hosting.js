@@ -51,10 +51,17 @@ const Hosting = ({ user, PORT, images }) => {
         })
     }
 
+    const [propTypes, setPropTypes] = useState(null);
+
     // Randomized Background Images
     const [i, setI] = useState();
     useEffect(() => {
-        setI(images !== null ? Math.floor(Math.random() * images.length) : 0)
+        fetch("/types")
+        .then(res => res.json())
+        .then(data => {
+            setPropTypes(data.data);
+            setI(images !== null ? Math.floor(Math.random() * images.length) : 0);
+        });
     }, [images])
 
     return <HostWrap // Hosting page for Authenticated Users
@@ -87,18 +94,11 @@ const Hosting = ({ user, PORT, images }) => {
                                 onChange={e => setForm({...form, type: e.target.value})}
                                 defaultValue=""
                                 required
-                            >
+                            >{/* Property Types options mapped by fetch */}
                                 <option value="" disabled>Select Type of Property *</option>
-                                <option value="Art Studio">Art Studio</option>
-                                <option value="Automotive or Garage">Automotive / Garage</option>
-                                <option value="Computer Lab">Computer Lab</option>
-                                <option value="Crafting Workshop">Crafting Workshop</option>
-                                <option value="Fitness">Fitness Center / Studio</option>
-                                <option value="Industrial">Industrial (Other)</option>
-                                <option value="Kitchen">Kitchen and Food Prep</option>
-                                <option value="Health / Medical">Health / Medical</option>
-                                <option value="Office">Office</option>
-                                <option value="Other">Other</option>
+                                {propTypes !== null &&
+                                propTypes.map((type, index) => 
+                                <option key={index} value={type}>{type}</option>)}
                             </Select>
                         </div>
                     </div>

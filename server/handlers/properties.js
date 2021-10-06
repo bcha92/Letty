@@ -9,6 +9,9 @@ import { v4 as uuidv4 } from "uuid";
 
 // GET Properties by user ID
 export const getProperties = async (req, res) => {
+    // QUERY // "/properties?type=xxxxx" by building type
+    let { type } = req.query; console.log(type);
+
     // Deconstructed res.locals
     const { options, database, properties } = res.locals;
     const mongo = new MongoClient(MONGO_URI, options);
@@ -17,13 +20,16 @@ export const getProperties = async (req, res) => {
         // Connect Mongo, begin session
         await mongo.connect();
         const db = mongo.db(database);
-        const results = await db.collection(properties).find().toArray();
+        const results = await db.collection(properties).find(
+            type === "all" || type === undefined ? {} : { type: type }
+        ).toArray();
 
         // Results if no properties are found
         if (results.length === 0) {
             res.status(400).json({
                 status: 400,
                 message: `No properties found.`,
+                data: results,
             })
         }
         // Results if any properties are found

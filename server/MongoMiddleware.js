@@ -10,7 +10,8 @@ const mongokeys = async (req, res, next) => {
     res.locals.reservations = "reservations";
     res.locals.properties = "properties";
 
-    res.locals.test = "test"; // FOR TESTING MONGO ONLY
+    // MongoDB "Test" Database Sandbox // For Testing new Endpoints ONLY
+    // res.locals.test = "test";
 
     next();
 };

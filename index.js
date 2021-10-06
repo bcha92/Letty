@@ -31,6 +31,7 @@ import {
     addProperty, getProperties, getProperty, addRoom, removeRoom, getImages,
 } from "./server/handlers/properties.js";
 import { decideBooking, checkRooms } from "./server/handlers/approve.js";
+import getPropertyTypes from "./server/handlers/propertytypes.js";
 
 // Local Port to host application || 4000 by default
 const port = process.env.PORT || 4000;
@@ -65,8 +66,11 @@ app.post("/add", mongokeys, addProperty);
 app.patch("/properties/:propertyId", mongokeys, addRoom);
 // PATCH / Remove a room from a Property
 app.patch("/properties/:propertyId/:spaceId", mongokeys, removeRoom);
+
 // GET // Images from Each Property
 app.get("/images", mongokeys, getImages);
+// GET / Property Types
+app.get("/types", getPropertyTypes)
 
 // APPROVES
 // PATCH // Approve/Deny Booking by Property ID and Reservation ID

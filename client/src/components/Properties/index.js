@@ -9,19 +9,36 @@ const Locations = ({ PORT, GK }) => {
     // Get Properties
     const [list, setList] = useState(null);
     const [select, setSelect] = useState(null);
+
+    // Set Property Filter State by Type
+    const [type, setType] = useState("all");
+    const [propType, setPropType] = useState([]);
+
     // Set Location on Marker Click State
     const [location, setLocation] = useState(null);
 
     useEffect(() => {
-        fetch(PORT + "/properties")
+        fetch(PORT + `/properties?type=${type}`)
         .then(res => res.json())
         .then(data => setList(data.data))
-    }, [PORT])
+        fetch(PORT + "/types")
+        .then(res => res.json())
+        .then(data => setPropType(data.data))
+    }, [PORT, type])
 
     return <LocationWrap>
         <LocationList onClick={() => setSelect(null)}>
-        <h2>Locations</h2>
-            {list === null ? <h2>Loading...</h2> :
+            <h2>Locations</h2>
+            <h3>Filter By Type:</h3>
+            <Select // Type of Property
+                onChange={e => setType(e.target.value)}
+                defaultValue="all"
+            >{/* Property Types options mapped by fetch */}
+                <option key="all" value="all">All - No Filter</option>
+                {propType !== null && propType.map((type, index) => 
+                <option key={index} value={type}>{type}</option>)}
+            </Select>
+            {list !== undefined && list === null ? <h2>Loading...</h2> :
             list.length === 0 ?
             <h2>There are no locations that match your criteria</h2> :
             list.map(property =>
@@ -41,6 +58,7 @@ const Locations = ({ PORT, GK }) => {
                         {property.suite.length !== 0 &&
                         ", " + property.suite}
                     </p>
+                    <p>Property Type: {property.type}</p>
                     <p
                         className="blue"
                         onClick={() => history.push(`/locations/${property._id}`)}
@@ -110,6 +128,20 @@ const LocationWrap = styled.div`
 const LocationList = styled.div`
     display: flex;
     flex-flow: column wrap;
+`;
+
+const Select = styled.select`
+    z-index: 5;
+    margin: 10px;
+    padding: 10px;
+    max-width: 400px;
+    font-size: 18px;
+    transition: 500ms ease-in-out;
+    &:hover {
+        background: whitesmoke;
+        transform: scale(105%);
+        transition: 300ms ease-in-out
+    }
 `;
 
 const Item = styled.div`

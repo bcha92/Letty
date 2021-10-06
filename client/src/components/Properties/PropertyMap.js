@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow } from "react-google-maps";
 import styled from "styled-components";
@@ -16,10 +16,12 @@ const LocationsMap = withScriptjs(withGoogleMap(({
         defaultCenter={properties.length > 1 ?
             // If geo is undefined, default lat/lng to Concordia University, Montreal
             concordia :
+            properties.length === 0 ?
+            concordia :
             properties[0].geo
         }
         center={location !== null ? location.geo :
-            properties !== null ?
+            properties === null ?
             properties[0].geo : select !== null ?
             select.geo :
             concordia}
