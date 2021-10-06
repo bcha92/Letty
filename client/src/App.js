@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { PORT } from "./index";
 // Auth0 Context
@@ -24,6 +24,15 @@ const App = ({ GK }) => {
     logout, user,
   } = useAuth0();
 
+  // Image Rendering State
+  const [images, setImages] = useState(null);
+  useEffect(() => {
+    fetch("/images")
+    .then(res => res.json())
+    .then(data => setImages(data.data))
+    .catch(err => console.log("image fetch error:", err))
+  }, [setImages])
+
   return (
     <BrowserRouter>
     <GlobalStyles />
@@ -38,7 +47,7 @@ const App = ({ GK }) => {
     <Switch>
       {/* Homepage and Properties */}
       <Route exact path="/">
-        <Homepage />
+        <Homepage images={images} />
       </Route>
       <Route exact path="/locations">
         <Locations
@@ -55,22 +64,29 @@ const App = ({ GK }) => {
         />
       </Route>
       <Route path="/hosting">
-        {isAuthenticated ? <Hosting
+        {isAuthenticated ?
+        <Hosting
           loginWithRedirect={loginWithRedirect}
           isAuthenticated={isAuthenticated}
           user={user}
           PORT={PORT}
-        /> : <HostingIntro loginWithRedirect={loginWithRedirect} /> }
+          images={images}
+        /> :
+        <HostingIntro
+          loginWithRedirect={loginWithRedirect}
+          images={images}
+        />}
       </Route>
 
       {/* About/Contact */}
       <Route path="/about">
-        <About />
+        <About images={images} />
       </Route>
       <Route path="/contact">
         <Contact
           isAuthenticated={isAuthenticated}
           user={user}
+          images={images}
         />
       </Route>
 
@@ -80,6 +96,7 @@ const App = ({ GK }) => {
         <Profile
           user={user}
           PORT={PORT}
+          images={images}
         /> : <ErrorSplash />}
       </Route>
 

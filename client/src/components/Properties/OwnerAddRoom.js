@@ -81,6 +81,7 @@ const OwnerAddRoom = ({ propertyId, history }) => {
                 />
                 <Input
                     type="Submit"
+                    className="submit"
                 />
             </div>
 
@@ -119,6 +120,19 @@ const Input = styled.input`
     max-width: 200px;
     &.price {max-width: 100px};
     &.date {z-index: 1};
+    &.submit {
+        padding: 10px 20px;
+        font-weight: bold;
+        color: white;
+        background: green;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 300ms ease-in-out;
+        &:hover {
+            background: yellowgreen;
+            transition: 300ms ease-in-out;
+        }
+    }
 `;
 
 const ErrBubble = styled.div`

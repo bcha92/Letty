@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // Main Profile Component
-const Profile = ({ user, PORT }) => {
+const Profile = ({ user, PORT, images }) => {
     let history = useHistory(); // useHistory
 
     // Local States for Cancel Book and Notification
@@ -19,6 +19,7 @@ const Profile = ({ user, PORT }) => {
 
     // Get Properties by Owner ID
     const [properties, getProperties] = useState(null);
+
     useEffect(() => {
         fetch(PORT + "/properties")
         .then(res => res.json())
@@ -91,8 +92,11 @@ const Profile = ({ user, PORT }) => {
         .then(history.push("/"))
     }
 
-    return <ProfileWrap>
-        {/* Main Profile Component */}
+    return <ProfileWrap // Main Profile Component
+        style={{ background: images === null ? "white" : `white url(${images[
+            Math.floor(Math.random() * images.length)
+        ]}) 100% repeat` }}
+    >
         <MainProfile>
             <h2>Hello {user.name === user.email ?
                     user.nickname.slice(0, 1).toUpperCase()
@@ -213,28 +217,55 @@ const Profile = ({ user, PORT }) => {
     </ProfileWrap>
 };
 
+// Keyframes Animation
+const fadeIn = keyframes`
+    from { // Starting Position
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    30% {
+        opacity: 0.5;
+        transform: translateY(-10px);
+    }
+    60% {transform: translateY(-5px)}
+    80% {transform: translateY(-2px)}
+
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+`;
+
 // Styled Components
 const ProfileWrap = styled.div`
     display: flex;
     flex-direction: column;
+    animation: ${fadeIn} 1s linear;
 `;
 
 const MainProfile = styled(ProfileWrap)`
+    background: rgba(255, 255, 255, 0.85);
     justify-content: center;
     align-items: center;
     padding: 50px 0 20px;
-    & > h2 {font-size: 30px};
+    & > h2 {
+        font-size: 30px;
+        animation: ${fadeIn} 1800ms linear;
+    };
     & > img {
         width: 200px;
         height: 200px;
         margin: 20px;
+        animation: ${fadeIn} 1500ms linear;
     };
-    `;
+`;
 
 const ProfileDetails = styled(ProfileWrap)`
     flex-wrap: wrap;
     padding: 50px;
     & > p {font-size: 20px};
+    animation: ${fadeIn} 1200ms linear;
 `;
 
 const B = styled.span`
@@ -256,6 +287,7 @@ const DivLine = styled.div`
 `;
 
 const HostWrapper = styled(ProfileWrap)`
+    background: rgba(255, 255, 255, 0.7);
     padding: 20px;
     & > h3 {
         font-size: 26px;
@@ -272,6 +304,7 @@ const ListWrap = styled(ProfileWrap)`
 `;
 
 const Item = styled.div`
+    background: rgba(255, 255, 255, 0.8);
     border: 3px solid gray;
     border-radius: 10px;
     color: black;
@@ -286,9 +319,11 @@ const Item = styled.div`
         min-width: 600px;
         margin-right: 20px;
     }
+    animation: ${fadeIn} 2200ms linear;
 `;
 
 const ItemProp = styled(Link)`
+    background: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     border: 3px solid gray;
     border-radius: 10px;
@@ -300,6 +335,7 @@ const ItemProp = styled(Link)`
         margin-right: 20px;
         min-width: 600px;
     };
+    animation: ${fadeIn} 2500ms linear;
 `;
 
 const Biv = styled(ProfileWrap)`
@@ -314,6 +350,19 @@ const Biv = styled(ProfileWrap)`
     };
 `;
 
-const Button = styled.button`margin-left: 10px;`;
+const Button = styled.button`
+    margin: 10px;
+    font-weight: bold;
+    color: white;
+    background: red;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 500ms ease-in-out;
+    &:hover {
+        background: orangered;
+        transition: 200ms ease-in-out;
+    };
+`;
 
 export default Profile;

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 // Hosting Component (for Authorized Users Only)
-const Hosting = ({ user, PORT }) => {
+const Hosting = ({ user, PORT, images }) => {
     let history = useHistory();
     // Property Registration Form Initial State
     const initState = {
@@ -51,7 +51,15 @@ const Hosting = ({ user, PORT }) => {
         })
     }
 
-    return <HostWrap>{/* Hosting page for Authenticated Users */}
+    // Randomized Background Images
+    const [i, setI] = useState();
+    useEffect(() => {
+        setI(images !== null ? Math.floor(Math.random() * images.length) : 0)
+    }, [images])
+
+    return <HostWrap // Hosting page for Authenticated Users
+        style={{ background: images === null ? "white" : `white url(${images[i]}) 100% repeat` }}
+    >
         <HostingSplash>
             <h2>Register your Property</h2>
             <p>Please fill out as much detail about your property.</p>
@@ -105,10 +113,12 @@ const Hosting = ({ user, PORT }) => {
                 </div>
                 <LargeInput // Description
                     placeholder="Description of Property"
+                    className="desc"
                     onChange={e => setForm({...form, description: e.target.value})}
                 />
                 <LargeInput // Restrictions
                     placeholder="Rules/Restrictions for Users"
+                    className="rest"
                     onChange={e => setForm({...form, restrictions: e.target.value})}
                 />
 
@@ -128,18 +138,41 @@ const Hosting = ({ user, PORT }) => {
     </HostWrap>
 };
 
+// Keyframes Animation
+const fadeIn = keyframes`
+    from { // Starting Position
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    30% {
+        opacity: 0.5;
+        transform: translateY(-10px);
+    }
+    60% {transform: translateY(-5px)}
+    80% {transform: translateY(-2px)}
+
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+`;
+
 // Styled Components
 const HostWrap = styled.div`
     display: flex;
     flex-flow: column wrap;
+    animation: ${fadeIn} 1s linear;
 `;
 
 const HostingSplash = styled(HostWrap)`
+    background: rgba(255, 255, 255, 0.8);
     padding: 20px;
     & > h2 {
         font-size: 30px;
         margin-bottom: 20px;
     };
+    & > h2, p {animation: ${fadeIn} 900ms linear};
 `;
 
 const Form = styled.form`
@@ -157,6 +190,9 @@ const Form = styled.form`
                 flex-direction: column;
             };
         };
+    }
+    & > div > div {
+        animation: ${fadeIn} 1100ms linear;
     }
 `;
 
@@ -176,6 +212,20 @@ const Input = styled.input`
     };
     &.submit {
         min-height: 50px;
+        animation: ${fadeIn} 3s linear;
+        font-weight: bold;
+        font-size: 20px;
+        background: dodgerblue;
+        color: white;
+        max-width: 200px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 500ms ease-in-out;
+        &:hover {
+            background: skyblue;
+            transform: scale(105%);
+            transition: 500ms ease-in-out;
+        }
     }
     @media (min-width: 769px) {
         max-height: 20px;
@@ -199,11 +249,14 @@ const LargeInput = styled.textarea`
     @media (max-width: 768px) {
         resize: none;
         max-width: 400px;
-        &.features {min-width: 400px};
+        &.features {
+            min-width: 400px;
+        };
     };
     @media (min-width: 769px) {
         min-height: 150px;
     };
+    animation: ${fadeIn} 2s linear;
 `;
 
 const R = styled.span`color: red;`;
@@ -219,6 +272,7 @@ const ErrBubble = styled.div`
     border-radius: 10px;
     color: rgb(200, 0, 0);
     & > h3 {margin-bottom: 10px};
+    animation: ${fadeIn} 300ms linear;
 `;
 
 export default Hosting;

@@ -42,7 +42,20 @@ const OwnerDeleteWrap = styled.div`
             cursor: pointer;
         }
     };
-    & > button {margin: 10px 20px};
+    & > button {
+        margin: 10px 20px;
+        padding: 10px 20px;
+        font-weight: bold;
+        color: white;
+        background: red;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 300ms ease-in-out;
+        &:hover {
+            background: orange;
+            transition: 300ms ease-in-out;
+        };
+    };
 `;
 
 const B = styled.span`font-weight: bold;`;

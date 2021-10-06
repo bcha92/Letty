@@ -70,7 +70,7 @@ const OwnerCheckRes = ({ // Props from Property.js
                 // Status Indicator and Buttons
                 reservation.approved === null ?
                 <><O>PENDING</O>
-                <Button onClick={
+                <Button className="approve" onClick={
                     () => approveHandle(property._id, reservation._id, room.id, true, reply)
                 }>APPROVE</Button>
                 <Button onClick={
@@ -102,6 +102,7 @@ const MessageBox = styled.textarea`
     font-size: 20px;
     min-width: 300px;
     &.reply {font-size: 16px};
+    transition: 500ms ease-out;
 `;
 
 const Biv = styled.div`
@@ -130,6 +131,27 @@ const ResBubble = styled.div`
     margin-top: 10px;
 `;
 
-const Button = styled.button`margin-left: 10px;`;
+const Button = styled.button`
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: white;
+    background: red;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 300ms ease-in-out;
+    &:hover {
+        background: orange;
+        transition: 300ms ease-in-out;
+    }
+    &.approve {
+        background: green;
+        &:hover {
+            background: yellowgreen;
+            transform: scale(105%);
+            transition: 300ms ease-in-out;
+        }
+    };
+`;
 
 export default OwnerCheckRes;

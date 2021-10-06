@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // Error Page Import
@@ -43,7 +43,12 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
     console.log(property);
 
     return isLoaded && property !== null ?
-    <PropertyWrapper>
+    <PropertyWrapper
+        style={{ background: property.images.length === 0 ? "white" : `white url(${property.images[
+            Math.floor(Math.random() * property.images.length)
+        ]}) repeat center`
+        }}
+    >
         <div>
             <PropertyInfo>{/* Current Property Information */}
                 <h2>{property.name}</h2>
@@ -195,6 +200,26 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
     <ErrorSplash />
 };
 
+// Keyframes Animation
+const fadeIn = keyframes`
+    from { // Starting Position
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    30% {
+        opacity: 0.5;
+        transform: translateY(-10px);
+    }
+    60% {transform: translateY(-5px)}
+    80% {transform: translateY(-2px)}
+
+    to {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+`;
+
 // Styled Copmonents
 const PropertyWrapper = styled.div`
     display: flex;
@@ -203,11 +228,13 @@ const PropertyWrapper = styled.div`
         display: flex;
         flex-direction: row;
         & > div {
+            background: rgba(255, 255, 255, 0.8);
             display: flex;
             flex-direction: column;
             flex: 1;
         };
     };
+    animation: ${fadeIn} 4s linear;
 `;
 
 const PropertyInfo = styled.div`
@@ -215,9 +242,13 @@ const PropertyInfo = styled.div`
     flex-flow: column wrap;
     padding: 10px;
     & > h3 {margin-bottom: 10px};
+    animation: ${fadeIn} 2s linear;
 `;
 
 const PropWrap = styled(PropertyInfo)`
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    margin: 10px 0;
     & > span {
         cursor: pointer;
         &.rooms {cursor: inherit};
@@ -229,20 +260,30 @@ const PropWrap = styled(PropertyInfo)`
             margin-left: 20px;
             list-style: none;
             & > li {
+                background: white;
                 padding: 5px;
                 border: 2px solid gray;
                 border-radius: 10px;
                 margin: 5px 0;
                 max-width: 700px;
+                animation: ${fadeIn} 2500ms linear;
             };
         };
     };
+    animation: ${fadeIn} 2200ms linear;
 `;
 
 const DobWrap = styled(PropertyInfo)`
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    margin: 10px 0;
     @media (min-width: 769px) {
         flex-direction: row;
     };
+    & > div {
+        animation: ${fadeIn} 2500ms linear;
+    };
+    animation: ${fadeIn} 2200ms linear;
 `;
 
 const ResList = styled.div`& > h4 {margin: 5px 0};`;

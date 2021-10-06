@@ -33,125 +33,140 @@ const Header = ({
         logout({returnTo: window.location.origin})
     };
 
-    return <HeaderWrap>
-        <MenuWrap>
+    return <StickyWrap>
+        <HeaderWrap>
+            <MenuWrap>
 
-            {/* Only visible for smaller screens */}
-            <MobileMenu>
-                <CgMenuGridR size="30px" onClick={toggleMenu} />
-                <DropDown style={{display: showMenu ? "flex" : "none"}}>
+                {/* Only visible for smaller screens */}
+                <MobileMenu>
+                    <CgMenuGridR size="30px" onClick={toggleMenu} />
+                    <DropDown style={{display: showMenu ? "flex" : "none"}}>
 
-                    {isAuthenticated ? // User Navigation shown if Authenticated
-                    <>
-                    <p>Hello {user.name === user.email ?
-                        user.nickname.slice(0, 1).toUpperCase()
-                        + user.nickname.slice(1,) :
-                        user.name
-                    }</p>
-                    <MobileNav exact to="/profile" onClick={closeMenu}>
-                        Your LETTY Dashboard
-                    </MobileNav>
-                    <MobileNav to={window.location.origin} onClick={logoutHandle}>
-                        Log Out
-                    </MobileNav>
-                    </> :
-
-                    <>
-                    <p>Hello Guest</p>
-                    <MobileNav to={window.location.origin} onClick={loginHandle}>
-                        Log In
-                    </MobileNav>
-                    </>}
-
-                    <p>Navigation</p>
-                    <MobileNav to="/locations" onClick={closeMenu}>
-                        Find a LETTY
-                    </MobileNav>
-                    <MobileNav to="/hosting" onClick={closeMenu}>
-                        Host a LETTY
-                    </MobileNav>
-                    <MobileNav to="/about" onClick={closeMenu}>
-                        About
-                    </MobileNav>
-                    <MobileNav to="/contact" onClick={closeMenu}>
-                        Contact
-                    </MobileNav>
-                </DropDown>
-            </MobileMenu>
-
-            {/* Only visible to larger screens */}
-            <WebMenu>
-                <NavWrap className="webLeft" exact to="/" onClick={closeMenu}>
-                    <h2>LETTY</h2>
-                </NavWrap>
-                <WebNav to="/locations" onClick={closeMenu}>Find a LETTY</WebNav>
-                <WebNav to="/hosting" onClick={closeMenu}>Host a LETTY</WebNav>
-            </WebMenu>
-
-        </MenuWrap>
-
-        {/* Only visible to smaller screens */}
-        <MobileMenu>
-            <NavWrap exact to="/" onClick={closeMenu}>
-                <h2>LETTY</h2>
-            </NavWrap>
-        </MobileMenu>
-
-        <MenuWrap>
-
-            {/* Only visible to larger screens */}
-            <WebMenu>
-                <WebNav to="/about" onClick={closeMenu}>About</WebNav>
-                <WebNav to="/contact" onClick={closeMenu}>Contact</WebNav>
-            </WebMenu>
-
-            {isAuthenticated ? // Only visible if Login Authenticated
-            <>
-                <MobileMenu>{/* Only visible to smaller screens */}
-                    <NavWrap exact to="/profile" onClick={closeMenu}>
-                        <img
-                            src={user.picture}
-                            alt={user.name}
-                            width="30px"
-                            height="30px"
-                        />
-                    </NavWrap>
-                </MobileMenu>
-
-                <WebMenu className="userMenu" onClick={toggleUser} >{/* Only visible to larger screens */}
-                    <span>Hello {user.name === user.email ?
-                        user.nickname.slice(0, 1).toUpperCase()
-                        + user.nickname.slice(1,) :
-                        user.name
-                    }</span>
-                    <img
-                        src={user.picture}
-                        alt={user.name}
-                        width="30px"
-                        height="30px"
-                    />
-                    <UserDrop style={{display: userMenu ? "flex": "none"}}>
+                        {isAuthenticated ? // User Navigation shown if Authenticated
+                        <>
+                        <p>Hello {user.name === user.email ?
+                            user.nickname.slice(0, 1).toUpperCase()
+                            + user.nickname.slice(1,) :
+                            user.name
+                        }</p>
                         <MobileNav exact to="/profile" onClick={closeMenu}>
                             Your LETTY Dashboard
                         </MobileNav>
                         <MobileNav to={window.location.origin} onClick={logoutHandle}>
                             Log Out
                         </MobileNav>
-                    </UserDrop>
-                </WebMenu>
-            </> :
-            // Only visible is Login Not Authenticated
-            <Button onClick={loginHandle}>
-                <span>Log In </span><CgProfile size="30px" />
-            </Button>}
+                        </> :
 
-        </MenuWrap>
-    </HeaderWrap>
+                        <>
+                        <p>Hello Guest</p>
+                        <MobileNav to={window.location.origin} onClick={loginHandle}>
+                            Log In
+                        </MobileNav>
+                        </>}
+
+                        <p>Navigation</p>
+                        <MobileNav to="/locations" onClick={closeMenu}>
+                            Find a LETTY
+                        </MobileNav>
+                        <MobileNav to="/hosting" onClick={closeMenu}>
+                            Host a LETTY
+                        </MobileNav>
+                        <MobileNav to="/about" onClick={closeMenu}>
+                            About
+                        </MobileNav>
+                        <MobileNav to="/contact" onClick={closeMenu}>
+                            Contact
+                        </MobileNav>
+                    </DropDown>
+                </MobileMenu>
+
+                {/* Only visible to larger screens */}
+                <WebMenu>
+                    <NavWrap className="webLeft" exact to="/" onClick={closeMenu}>
+                        <h2>LETTY</h2>
+                    </NavWrap>
+                    <WebNav to="/locations" onClick={closeMenu}>Find a LETTY</WebNav>
+                    <WebNav to="/hosting" onClick={closeMenu}>Host a LETTY</WebNav>
+                </WebMenu>
+
+            </MenuWrap>
+
+            {/* Only visible to smaller screens */}
+            <MobileMenu>
+                <NavWrap exact to="/" onClick={closeMenu}>
+                    <h2>LETTY</h2>
+                </NavWrap>
+            </MobileMenu>
+
+            <MenuWrap>
+
+                {/* Only visible to larger screens */}
+                <WebMenu>
+                    <WebNav to="/about" onClick={closeMenu}>About</WebNav>
+                    <WebNav to="/contact" onClick={closeMenu}>Contact</WebNav>
+                </WebMenu>
+
+                {isAuthenticated ? // Only visible if Login Authenticated
+                <>
+                    <MobileMenu>{/* Only visible to smaller screens */}
+                        <NavWrap exact to="/profile" onClick={closeMenu}>
+                            <img
+                                src={user.picture}
+                                alt={user.name}
+                                width="30px"
+                                height="30px"
+                            />
+                        </NavWrap>
+                    </MobileMenu>
+
+                    <WebMenu className="userMenu" onClick={toggleUser} >{/* Only visible to larger screens */}
+                        <span>Hello {user.name === user.email ?
+                            user.nickname.slice(0, 1).toUpperCase()
+                            + user.nickname.slice(1,) :
+                            user.name
+                        }</span>
+                        <img
+                            src={user.picture}
+                            alt={user.name}
+                            width="30px"
+                            height="30px"
+                        />
+                        <UserDrop style={{display: userMenu ? "flex": "none"}}>
+                            <MobileNav
+                                className="weby"
+                                exact to="/profile"
+                                onClick={closeMenu}
+                            >
+                                Your LETTY Dashboard
+                            </MobileNav>
+                            <MobileNav
+                                className="weby"
+                                to={window.location.origin}
+                                onClick={logoutHandle}
+                            >
+                                Log Out
+                            </MobileNav>
+                        </UserDrop>
+                    </WebMenu>
+                </> :
+                // Only visible is Login Not Authenticated
+                <Button onClick={loginHandle}>
+                    <span>Log In </span><CgProfile size="30px" />
+                </Button>}
+
+            </MenuWrap>
+        </HeaderWrap>
+    </StickyWrap>
 };
 
 // Styled Components
-const HeaderWrap = styled.header` // Main Header
-    z-index: 1;
+const StickyWrap = styled.header`
+    position: sticky;
+    top: 0;
+    z-index: 10;
+`;
+
+const HeaderWrap = styled.div` // Main Header
     padding: 20px;
     display: flex;
     justify-content: space-between;
@@ -222,13 +237,28 @@ const NavWrap = styled(NavLink)` // Basic Styled Link
     text-decoration: none;
     color: black;
     &.webLeft {margin-right: 50px};
+    &:hover {
+        transform: scale(120%);
+        transition: 300ms ease-in-out;
+        font-weight: bold;
+    }
+    transition: 500ms ease-in-out;
 `;
 
 // Mobile Navigation Links
 const MobileNav = styled(NavWrap)` // Mobile Dropdown
     padding: 10px 20px;
     width: 100%;
-    &:hover {background: greenyellow}; // Hover
+    &:hover { // Hover
+        background: greenyellow;
+        transform: translateX(20px) scale(105%);
+        border: 1px solid green;
+    };
+    &.weby {
+        &:hover {
+            transform: translateX(-20px) scale(105%);
+        }
+    }
     `;
 
 // Desktop Navigation Links
@@ -249,6 +279,11 @@ const Button = styled.button` // Login Button (Unauthenticated)
         @media (max-width: 768px) { // Screen
             display: none;
         };
+    }
+    transition: 300ms ease-in-out;
+    &:hover {
+        transform: scale(120%);
+        font-weight: bold;
     }
 `;
 
