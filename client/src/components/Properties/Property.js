@@ -11,7 +11,7 @@ import OwnerAddRoom from "./OwnerAddRoom";
 import OwnerCheckRes from "./OwnerCheckRes";
 import OwnerDeleteRoom from "./OwnerDeleteRoom";
 import UserReservation from "./UserReservation";
-import LocationsMap from "./PropertyMap";
+import LocationDetailMap from "./PropertyDetailMap";
 import ImageCarousel from "./ImageCarousel";
 
 // Property Details Component
@@ -62,14 +62,12 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
                     <div style={{
                         width: "300px", height: "300px", margin: "20px"
                     }}>
-                        <LocationsMap
+                        <LocationDetailMap
                             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${GK}`}
                             loadingElement={<div style={{ height: "100%" }} />}
                             containerElement={<div style={{ height: "100%" }} />}
                             mapElement={<div style={{ height: "100%" }} />}
-                            properties={[property]}
-                            location={property}
-                            setLocation={setProperty}
+                            property={property}
                         />
                     </div>
 

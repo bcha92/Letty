@@ -18,6 +18,9 @@ const Locations = ({ PORT, GK }) => {
     const [location, setLocation] = useState(null);
 
     useEffect(() => {
+        setList(null);
+        setSelect(null);
+        setLocation(null);
         fetch(PORT + `/properties?type=${type}`)
         .then(res => res.json())
         .then(data => setList(data.data))
@@ -77,7 +80,6 @@ const Locations = ({ PORT, GK }) => {
                 }} />}
                 mapElement={<div style={{ height: "100%" }} />}
                 properties={list}
-                zoom={14}
                 setSelect={setSelect}
                 select={select}
                 location={location}

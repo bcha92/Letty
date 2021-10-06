@@ -1,18 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router";
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow } from "react-google-maps";
 import styled from "styled-components";
 
 // Map of Locations
 const LocationsMap = withScriptjs(withGoogleMap(({
-    properties, zoom=15, setSelect, select=null, location=null, setLocation
+    properties, setSelect, select=null, location=null, setLocation
 }) => {
     const concordia = { lat: 45.49496410858361, lng: -73.57789133761398 };
     // UseHistory Redirect Link {May need to borrow from parent state (Property)}
     let history = useHistory();
 
     return <GoogleMap // Default rendering of Google Maps
-        defaultZoom={zoom}
+        defaultZoom={14}
         defaultCenter={properties.length > 1 ?
             // If geo is undefined, default lat/lng to Concordia University, Montreal
             concordia :
@@ -45,7 +45,7 @@ const LocationsMap = withScriptjs(withGoogleMap(({
         )}
 
         {/* Information Window on Click */}
-        {location !== null && properties.length > 1 && 
+        {location !== null && properties.length > 0 && 
             <InfoWindow
                 position={location.geo === undefined ?
                     { lat: 45.49496410858361, lng: -73.57789133761398 } :
