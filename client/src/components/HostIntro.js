@@ -46,7 +46,7 @@ const fadeIn = keyframes`
 const Splash = styled.div`
     display: flex;
     flex-flow: column wrap;
-    animation: ${fadeIn} 5s linear;
+    animation: ${fadeIn} 2500ms linear;
 `;
 
 const HostWrap = styled(Splash)`
@@ -76,12 +76,13 @@ const Button = styled.button`
     font-weight: bold;
     font-size: 20px;
     background: dodgerblue;
+    cursor: pointer;
     color: white;
     padding: 20px;
     margin-top: 30px;
     max-width: 200px;
     border-radius: 10px;
-    animation: ${fadeIn} 2000ms linear;
+    animation: ${fadeIn} 2100ms linear;
 `;
 
 export default HostingIntro;

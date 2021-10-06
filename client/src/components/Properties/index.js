@@ -9,6 +9,8 @@ const Locations = ({ PORT, GK }) => {
     // Get Properties
     const [list, setList] = useState(null);
     const [select, setSelect] = useState(null);
+    // Set Location on Marker Click State
+    const [location, setLocation] = useState(null);
 
     useEffect(() => {
         fetch(PORT + "/properties")
@@ -30,6 +32,7 @@ const Locations = ({ PORT, GK }) => {
                     onClick={(e) => {
                         e.stopPropagation();
                         setSelect(property._id);
+                        setLocation(property);
                     }}
                 >
                     <h2>{property.name}</h2>
@@ -58,6 +61,9 @@ const Locations = ({ PORT, GK }) => {
                 properties={list}
                 zoom={14}
                 setSelect={setSelect}
+                select={select}
+                location={location}
+                setLocation={setLocation}
             />
         </div>}
 

@@ -70,6 +70,8 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
                             containerElement={<div style={{ height: "100%" }} />}
                             mapElement={<div style={{ height: "100%" }} />}
                             properties={[property]}
+                            location={property}
+                            setLocation={setProperty}
                         />
                     </div>
 
@@ -224,6 +226,7 @@ const fadeIn = keyframes`
 const PropertyWrapper = styled.div`
     display: flex;
     flex-flow: column wrap;
+    & > div {background: rgba(255, 255, 255, 0.8)};
     @media (min-width: 1000px) {
         display: flex;
         flex-direction: row;
@@ -242,16 +245,20 @@ const PropertyInfo = styled.div`
     flex-flow: column wrap;
     padding: 10px;
     & > h3 {margin-bottom: 10px};
+    & > h2, h3, p {margin: 0 20px};
     animation: ${fadeIn} 2s linear;
 `;
 
 const PropWrap = styled(PropertyInfo)`
     background: rgba(255, 255, 255, 0.8);
     border-radius: 20px;
-    margin: 10px 0;
+    margin: 20px;
     & > span {
         cursor: pointer;
-        &.rooms {cursor: inherit};
+        &.rooms {
+            cursor: inherit;
+            margin: 0 20px 10px;
+        };
     };
     & > p {margin-left: 20px};
     & > ul {
@@ -276,9 +283,12 @@ const PropWrap = styled(PropertyInfo)`
 const DobWrap = styled(PropertyInfo)`
     background: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
-    margin: 10px 0;
-    @media (min-width: 769px) {
+    margin: 20px;
+    padding-right: 30px;
+    align-items: center;
+    @media (min-width: 1680px) {
         flex-direction: row;
+        justify-content: space-between;
     };
     & > div {
         animation: ${fadeIn} 2500ms linear;

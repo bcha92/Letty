@@ -126,7 +126,8 @@ const UserReservation = ({
             />
             <Input // Date Lock In
                 type="button"
-                value={verify ? "Change Dates" : "Set Dates"}
+                className={verify ? "submit change" : "submit"}
+                value={verify ? "Change Dates?" : "Set Dates"}
                 onClick={() => {
                     if (startDay.length === 0 ||
                     endDay.length === 0) {
@@ -139,7 +140,7 @@ const UserReservation = ({
                             setWarn("");
                         }
                         else {
-                            setWarn("Your dates have been set. Please continue with your booking.")
+                            setWarn("Your dates have been set (not verified). Please continue with your booking.")
                         }
                     }
                 }}
@@ -168,6 +169,7 @@ const UserReservation = ({
                 />
             <Input
                 type="submit"
+                className="submit"
                 disabled={verify ? false : true}
                 />
             {status === "error" &&
@@ -201,6 +203,24 @@ const Input = styled.input`
     max-width: 200px;
     &.price {max-width: 100px};
     &.date {z-index: 1};
+    &.submit {
+        font-weight: bold;
+        padding: 0 20px;
+        font-size: 20px;
+        background: dodgerblue;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 300ms ease-in-out;
+        &.change {
+            background: green;
+            &:hover {background: lightgreen};
+        }
+        &:hover {
+            background: skyblue;
+            transition: 500ms ease-in-out;
+        }
+    };
 `;
 
 const MessageBox = styled.textarea`

@@ -39,7 +39,7 @@ const Header = ({
 
                 {/* Only visible for smaller screens */}
                 <MobileMenu>
-                    <CgMenuGridR size="30px" onClick={toggleMenu} />
+                    <CgMenuGridR size="25px" onClick={toggleMenu} />
                     <DropDown style={{display: showMenu ? "flex" : "none"}}>
 
                         {isAuthenticated ? // User Navigation shown if Authenticated
@@ -151,7 +151,7 @@ const Header = ({
                 </> :
                 // Only visible is Login Not Authenticated
                 <Button onClick={loginHandle}>
-                    <span>Log In </span><CgProfile size="30px" />
+                    <span>Log In </span><CgProfile size="20px" />
                 </Button>}
 
             </MenuWrap>
@@ -167,7 +167,7 @@ const StickyWrap = styled.header`
 `;
 
 const HeaderWrap = styled.div` // Main Header
-    padding: 20px;
+    padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
