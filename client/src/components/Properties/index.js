@@ -139,11 +139,11 @@ const Select = styled.select`
     max-width: 400px;
     font-size: 18px;
     transition: 500ms ease-in-out;
+    border-radius: 5px;
     &:hover {
         background: whitesmoke;
-        transform: scale(105%);
-        transition: 300ms ease-in-out
-    }
+        transition: 300ms ease-in-out;
+    };
 `;
 
 const Item = styled.div`

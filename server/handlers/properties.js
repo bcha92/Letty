@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 // GET Properties by user ID
 export const getProperties = async (req, res) => {
     // QUERY // "/properties?type=xxxxx" by building type
-    let { type } = req.query; console.log(type);
+    let { type } = req.query;
 
     // Deconstructed res.locals
     const { options, database, properties } = res.locals;
