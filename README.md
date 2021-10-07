@@ -103,8 +103,6 @@ Here you can add new spaces for rent, recommended capacity for this space, and t
 
 <img src="screenshots/newroom.JPG" alt="new room" />
 
-Here you can add new spaces for rent, recommended capacity for this space, and the daily rate.
-
 <img src="screenshots/addedroom.JPG" alt="added new room" />
 
 Once it's been added, you will see it on the property details page. Conversely, if you made an error, or want to take the room out of service, deleting this room is possible. However, if people already made reservations for this room, those reservations will also be cancelled with an automated message from the server.
