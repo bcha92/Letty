@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { VscError } from "react-icons/vsc";
 
-// Main Error Splash Component
+// Main Error Splash Component (shows only someone is trying to access unauthorized page or no page)
 const ErrorSplash = () => {
     return <ErrWrap>
         <VscError size="200px" />
@@ -15,6 +15,7 @@ const ErrorSplash = () => {
     </ErrWrap>
 };
 
+// Styled Components
 const ErrWrap = styled.div`
     display: flex;
     flex-flow: column wrap;
@@ -32,6 +33,12 @@ const HomeButton = styled(Link)`
     font-weight: bold;
     color: white;
     background: #f59999;
+    transition: 400ms ease-in-out;
+    &:hover {
+        background: red;
+        transition: 200ms ease-in-out;
+    };
+    &:active {background: orange};
 `;
 
 export default ErrorSplash;

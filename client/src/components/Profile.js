@@ -5,7 +5,7 @@ import styled, { keyframes } from "styled-components";
 // Import Sub-Component CancelBookOption
 import CancelBookOption from "./ProfileCancel";
 
-// Main Profile Component
+// Main Profile Component (for Authenticated Users ONLY)
 const Profile = ({ user, PORT, images }) => {
     let history = useHistory(); // useHistory
 
@@ -98,7 +98,7 @@ const Profile = ({ user, PORT, images }) => {
             Math.floor(Math.random() * images.length)
         ]}) 100% repeat` }}
     >
-        <MainProfile>
+        <MainProfile>{/* Main Profile Information */}
             <h2>Hello {user.name === user.email ?
                     user.nickname.slice(0, 1).toUpperCase()
                     + user.nickname.slice(1,) :

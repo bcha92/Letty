@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
-// Hosting Page for Non-Authenticated Users
+// Hosting Component for Non-Authenticated Users
 const HostingIntro = ({ loginWithRedirect, images }) => {
     return <Splash
         style={{ background: images === null || images.length === 0 ? "white" : `white url(${images[
@@ -9,7 +9,7 @@ const HostingIntro = ({ loginWithRedirect, images }) => {
         ]}) repeat center`, minHeight: "100vh"
         }}
     >
-        <HostWrap>
+        <HostWrap>{/* Introduction Panel with Link to Login Page via Auth0 */}
             <h2>Host your Property with Ease!</h2>
             <p>Here at LETTY, we prize ourselves as being the premier intermediary between commercial property owners and short-term users.</p>
             <h3>Free Registration with No Recurring Service Charges</h3>

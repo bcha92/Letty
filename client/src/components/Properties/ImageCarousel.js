@@ -13,7 +13,8 @@ const ImageCarousel = ({images=[]}) => {
         autoPlay={true}
         showThumbs={false}
     >
-        {// Carousel Rendering //
+        {// Carousel Rendering for Property Images in Property Details
+        // Still no way to adequately updload them and convert to Base64
         images.length === 0 ?
             <div>
             <img src={NoPreview} alt="no preview" style={{

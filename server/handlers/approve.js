@@ -111,7 +111,7 @@ export const checkRooms = async (req, res) => {
         }
     }
 
-    catch (err) {
+    catch (err) { // Error Handler
         console.log("checkRooms Error:", err);
     }
     mongo.close(); // Disconnect Mongo, end session

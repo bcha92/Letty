@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { PORT } from "./index";
+
 // Auth0 Context
 import { useAuth0 } from "@auth0/auth0-react";
+
 // Components
 import GlobalStyles from "./GlobalStyles";
 import Header from "./components/Header";
@@ -36,7 +38,7 @@ const App = ({ GK }) => {
   return (
     <BrowserRouter>
     <GlobalStyles />
-    <Header
+    <Header // Site Navigation Header
       loginWithRedirect={loginWithRedirect}
       isAuthenticated={isAuthenticated}
       error={error}

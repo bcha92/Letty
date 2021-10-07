@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow } from "react-google-maps";
 import styled from "styled-components";
 
-// Map of Locations
+// Map of Locations // Via Google Maps
 const LocationsMap = withScriptjs(withGoogleMap(({
     properties, setSelect, select=null, location=null, setLocation
 }) => {

@@ -48,6 +48,7 @@ const UserReservation = ({
         newEnd.setDate(newEnd.getDate());
         let dateArr = []; // New Array to be Returned
 
+        // Converts new Date() to readable ISO string
         for (newStart; newStart <= newEnd; newStart.setDate(newStart.getDate() + 1)) {
             dateArr.push(newStart.toISOString().slice(0, 10));
         }
@@ -55,7 +56,7 @@ const UserReservation = ({
             dateArr.push(newEnd.toISOString().slice(0, 10));
         }
 
-        setBookForm({...bookForm,
+        setBookForm({...bookForm, // Sets new dates in ISO string array format (e.g. ["2020-12-25", "2020-12-26", ...])
             dates: dateArr,
             charge: (room.rate * dateArr.length).toFixed(2)});
         return
@@ -164,7 +165,7 @@ const UserReservation = ({
                     }
                 }}
             />
-            {verify ? <G>{warn}</G> : <R>{warn}</R>}
+            {verify ? <G>{warn}</G> : <R>{warn}</R> /* Message Bubble */}
 
             {verify && <>
             <Input // Credit Card #
@@ -192,7 +193,7 @@ const UserReservation = ({
                 className="submit"
                 disabled={verify ? false : true}
             />
-            {status === "error" &&
+            {status === "error" && // Error Message Bubble
             <ErrBubble>
                 <p>{message}</p>
             </ErrBubble>}

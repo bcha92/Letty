@@ -1,7 +1,7 @@
 import React from "react";
 import { GoogleMap, withScriptjs, withGoogleMap, Marker } from "react-google-maps";
 
-// Location Detail Map // GOOGLE
+// Location Detail Map via Google Maps (for small-scale Single Markers)
 const LocationDetailMap = withScriptjs(withGoogleMap(({ property }) => {
     // Default Coordinates for Concordia University, Montreal
     const concordia = { lat: 45.49496410858361, lng: -73.57789133761398 };

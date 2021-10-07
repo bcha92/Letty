@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 
-// Opencage API and getPosition function
+// Opencage API and getPosition function (converts street address to latitude and longitude)
 import opencage from "opencage-api-client";
 import dotenv from "dotenv";
 dotenv.config();
@@ -20,10 +20,10 @@ export const getPosition = async (address, key) => {
     }
 };
 
-//Middleware Import
+//Middleware Import (res.locals keywords to MongoDB Database) "/server/MongoMiddleware.js"
 import mongokeys from "./server/MongoMiddleware.js";
 
-// Handlers Import
+// Handlers Import "/server/handlers"
 import {
     getUserReservations, getReservation, bookReservation, deleteReservation,
 } from "./server/handlers/reservations.js";
@@ -52,7 +52,7 @@ app.get("/reservations/:userId/:reservationId", mongokeys, getReservation);
 app.post("/book", mongokeys, bookReservation);
 // DELETE a Reservation
 app.delete("/book/:reservationId", mongokeys, deleteReservation);
-// POST / Check availability of Rooms
+// POST / Check availability of Rooms (noramlly, this is a GET endpoint, but it had to be converted to POST because it is submitting a "date range" from front end via req.body and checks MongoDb through the each reservation in the property spaceId to see if any of the dates overlap)
 app.post("/checkRooms", mongokeys, checkRooms);
 
 // PROPERTIES
@@ -66,10 +66,11 @@ app.post("/add", mongokeys, addProperty);
 app.patch("/properties/:propertyId", mongokeys, addRoom);
 // PATCH / Remove a room from a Property
 app.patch("/properties/:propertyId/:spaceId", mongokeys, removeRoom);
-
 // GET // Images from Each Property
 app.get("/images", mongokeys, getImages);
-// GET / Property Types
+
+// TYPES
+// GET / Property Types (e.g. Office, Kitchen, etc.)
 app.get("/types", getPropertyTypes)
 
 // APPROVES

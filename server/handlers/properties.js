@@ -78,7 +78,7 @@ export const getProperty = async (req, res) => {
         }
     }
 
-    catch (err) {
+    catch (err) { // Error Handling
         console.log("getProperty Error:", err);
     }
     mongo.close(); // Disconnect Mongo, end session
@@ -186,7 +186,7 @@ export const addRoom = async (req, res) => {
         }
     }
 
-    catch (err) {
+    catch (err) { // Error Catcher
         console.log("addRoom Error:", err);
     }
     mongo.close(); // Disconnect Mongo, end session
@@ -231,7 +231,7 @@ export const removeRoom = async (req, res) => {
         })
     }
 
-    catch (err) {
+    catch (err) { // Error Catcher
         console.log("removeRoom Error:", err);
     }
     mongo.close(); // Disconnect Mongo, end session
@@ -272,7 +272,7 @@ export const getImages = async (req, res) => {
         }
     }
 
-    catch (err) {
+    catch (err) { // ERror Catcher
         console.log("getImages Error:", err);
     }
     mongo.close(); // Disconnect Mongo, end session

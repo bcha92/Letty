@@ -7,8 +7,10 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 // PORT number access from process.env or 4000 by default
 export const PORT = `http://localhost:${process.env.PORT || 4000}`
+// THIS KEY WILL NO LONGER BE AVAILABLE AS OF DECEMBER 2021
 const REACT_APP_GOOGLE_KEY = "AIzaSyBs2WcPdaJrAKuN2LkPAR1f2p8nj4L6m0g";
 
+// Main REACTDOM renderer via html file in /public
 ReactDOM.render(
   <React.StrictMode>
     <Auth0Provider

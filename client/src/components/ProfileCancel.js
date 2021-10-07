@@ -22,13 +22,13 @@ const CancelBookOption = ({ id }) => {
     }
 
     return <CancelWrap>
-        <B
+        <B // Dropdown Menu Handler
             className="cursor"
             onClick={() => setShow(!show)}
         >{show ? <GoTriangleDown /> : <GoTriangleRight />
         } Cancel Booking ?</B>
 
-        {show &&
+        {show && // Shown when dropdown is enabled
         <>
             <O>WARNING! Once you press this button, there's no turning back.</O>
             <Button

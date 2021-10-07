@@ -41,6 +41,14 @@ Once that is done, payment information ( * required, you may use random set of n
 <img src="screenshots/locations1.JPG" alt="loc2" />
 
 ---
+Mobile Screen Rendering
+---
+
+Also available in mobile screens if screen size is smaller than 769 pixels as shown below with dropdowns highlighted in yellowgreen.
+
+<img src="screenshots/mobile.jpg" alt="mobile screen" />
+
+---
 Log In Screen
 ---
 The login screen uses an API called <a href="https://auth0.com/">Auth0</a> (click on link for more details and documentation about this API). You can practically create a local account if you haven't already registered, or use an intermediary authentication (e.g. Google, Facebook) instead. Your profile will only be used by this site and this demonstration alone.

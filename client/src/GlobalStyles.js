@@ -1,4 +1,4 @@
-// Global CSS Styles via "styled-components"
+// Global CSS Styles via "styled-components" // Default settings for all front-end visual rendering
 import { createGlobalStyle } from "styled-components";
 export default createGlobalStyle`
     :root {

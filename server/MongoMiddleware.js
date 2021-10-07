@@ -1,4 +1,4 @@
-// MongoDB Next Middlware
+// MongoDB Next Middlware (Holds "strings" and data to access MongoDB database points without repeat writing each endpoint)
 const mongokeys = async (req, res, next) => {
     // Options
     res.locals.options = {

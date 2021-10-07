@@ -13,6 +13,7 @@ const getPropertyTypes = async (req, res) => {
                 message: "Property Types not found or file does not exist.",
             })
         }
+        // Sends back json data if property is found (local types.json file)
         res.status(200).json({
             status: 200,
             message: "Property Types found.",
@@ -20,7 +21,7 @@ const getPropertyTypes = async (req, res) => {
         })
     }
 
-    catch (err) {
+    catch (err) { // Error Catcher
         console.log("getPropertyTypes Error:", err);
     }
 };
