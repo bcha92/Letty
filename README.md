@@ -7,7 +7,7 @@ Concept website for short-term commercial space rental and reservations.
 Launch on VSCode
 ---
 ### This React.js/Node.js was designed with concurrency and convenience in mind.
-You only need to open "ONE" terminal and on the root folder, launch "yarn start". Both the server and the client would run concurrently.
+You only need to open "ONE" terminal and on the root folder, launch "yarn start". Both the server and the client will run concurrently on the terminal.
 
 #### For Debugger's Mode: Open two Terminals (no need to "cd server" or "cd client" on each terminal)
 1) On the first terminal, launch "yarn run server" first to launch the Node.js express based in the server folder
