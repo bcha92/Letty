@@ -4,6 +4,16 @@ Concept website for short-term commercial space rental and reservations.
 <img src="screenshots/home.JPG" alt="splash" />
 
 ---
+Launch on VSCode
+---
+### This React.js/Node.js was designed with concurrency and convenience in mind.
+You only need to open "ONE" terminal and on the root folder, launch "yarn start".
+
+#### For Debugger's Mode: Open two Terminals (no need to "cd server" or "cd client" on each terminal)
+1) On the first terminal, launch "yarn run server" first to launch the Node.js express based in the server folder
+2) On the second terminal, launch "yarn run client" to launch the front end React.js app based in the client folder
+
+---
 Locations Mapping
 ---
 This website uses Google Maps API to track and discover the various properties hosted by LETTY users.
