@@ -2,6 +2,8 @@
 Concept website for short-term commercial space rental and reservations.
 
 <img src="screenshots/home.JPG" alt="splash" />
+
+---
 Locations Mapping
 ---
 This website uses Google Maps API to track and discover the various properties hosted by LETTY users.
@@ -40,7 +42,7 @@ Profile
 ---
 After loggin in, you will be redirected to the homepage, where you will have many options, from booking a reservation, to checking how much balance you owe for your reservations, and how much you earn from your property LETTING.
 
-<img src="screenshots/capture.JPG" alt="profile" />
+<img src="screenshots/Capture.JPG" alt="profile" />
 
 Here, you can also check the status of your reservations and whether the owner has responded to your request. If they haven't seen it or made a decision yet, your status will be set to PENDING.
 
@@ -99,6 +101,7 @@ On your profile page, if you have unresolved/pending reservations for your prope
 <img src="screenshots/seeprofile.JPG" alt="see your property's reservations" />
 
 Once you click on your property, it will be redirected to your property details page where you can approve or reject it.
+
 <img src="screenshots/tobe.JPG" alt="approve or deny?" />
 
 ---
