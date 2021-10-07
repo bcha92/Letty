@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // Owner Check Reservations Sub-Component
 const OwnerCheckRes = ({ // Props from Property.js
-    reservations, history, room, property
+    reservations, room, property
 }) => {
+    let history = useHistory();
     // Dropdown State for OwnerCheckRes
     const [show, setShow] = useState(false);
     // Reservation Pending State

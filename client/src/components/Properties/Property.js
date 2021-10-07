@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router";
+import { useParams } from "react-router";
 import styled, { keyframes } from "styled-components";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
@@ -16,7 +16,6 @@ import ImageCarousel from "./ImageCarousel";
 
 // Property Details Component
 const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
-    let history = useHistory(); // Redirect history
     const { propertyId } = useParams(); // Property ID parameter
 
     // Get a Location in Detail
@@ -120,7 +119,6 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
                         // OwnerCheckRes.js sub-component
                         <><OwnerCheckRes
                             reservations={room.reservations}
-                            history={history}
                             room={room}
                             property={property}
                         />
@@ -137,7 +135,6 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
                         <OwnerDeleteRoom
                             propertyId={property._id}
                             spaceId={room.id}
-                            history={history}
                         />
                         </>
 
@@ -148,7 +145,6 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
                             property={property}
                             user={user}
                             propertyId={propertyId}
-                            history={history}
                             room={room}
                         /> :
                         // Guests and users NOT Logged In
@@ -172,7 +168,6 @@ const PropertyDetail = ({ isAuthenticated, user, PORT, GK }) => {
                 // OwnerAddRoom.js: OwnerAddRoom Sub-Component
                 <OwnerAddRoom
                     propertyId={property._id}
-                    history={history}
                 />}
 
             </PropWrap>

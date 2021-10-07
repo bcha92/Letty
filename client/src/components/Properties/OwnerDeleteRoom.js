@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // Owner Delete Room Sub-Component
-const OwnerDeleteRoom = ({ propertyId, spaceId, history }) => {
+const OwnerDeleteRoom = ({ propertyId, spaceId }) => {
+    let history = useHistory();
     // Show State
     const [show, setShow] = useState(false);
 

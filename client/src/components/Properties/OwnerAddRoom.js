@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // Owner Add Room Sub-Component
-const OwnerAddRoom = ({ propertyId, history }) => {
+const OwnerAddRoom = ({ propertyId }) => {
+    let history = useHistory();
     // Add Room Form State
     const initState = {
         id: "", rate: "0", occupancy: "", reservations: [],

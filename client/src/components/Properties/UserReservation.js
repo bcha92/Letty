@@ -1,11 +1,13 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import styled from "styled-components";
 import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
 
 // User Reservation Booking
 const UserReservation = ({
-    property, propertyId, user, history, room,
+    property, propertyId, user, room,
 }) => {
+    let history = useHistory();
     // Dropdown State for User Reservation
     const [show, setShow] = useState(false);
 
