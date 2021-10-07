@@ -46,7 +46,7 @@ Mobile Screen Rendering on Smaller Screens
 
 Also available in mobile screens if screen size is smaller than 769 pixels as shown below with dropdowns highlighted in yellowgreen.
 
-<img src="screenshots/mobile.jpg" alt="mobile screen" />
+<img src="screenshots/mobile.JPG" alt="mobile screen" />
 
 ---
 Log In Screen
