@@ -41,7 +41,7 @@ Once that is done, payment information ( * required, you may use random set of n
 <img src="screenshots/locations1.JPG" alt="loc2" />
 
 ---
-Mobile Screen Rendering
+Mobile Screen Rendering on Smaller Screens
 ---
 
 Also available in mobile screens if screen size is smaller than 769 pixels as shown below with dropdowns highlighted in yellowgreen.
