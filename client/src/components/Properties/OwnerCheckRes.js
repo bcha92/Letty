@@ -75,13 +75,13 @@ const OwnerCheckRes = ({ // Props from Property.js
                 }>APPROVE</Button>
                 <Button onClick={
                     () => approveHandle(property._id, reservation._id, room.id, false, reply)
-                }>DENY</Button>
+                }>REJECT</Button>
                 </> :
 
                 // If reservation is approved or not:
                 reservation.approved ?
                 <G>APPROVED</G> :
-                <R>NOT APPROVED</R>
+                <R>REJECTED</R>
             }</p>
         </ResBubble>)}
     </OwnerCheckWrap>

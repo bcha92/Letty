@@ -128,7 +128,7 @@ const UserReservation = ({
             }}
             className="datebook"
         >
-            <Input // From Date
+            <span>From: </span><Input // From Date
                 className="date"
                 onChange={e => setStartDay(e.target.value)}
                 min={today()}
@@ -136,7 +136,7 @@ const UserReservation = ({
                 disabled={verify ? true : false}
                 required
             />
-            <Input // To Date
+            <span>To: </span><Input // To Date
                 className="date"
                 onChange={e => setEndDay(e.target.value)}
                 type="date"
@@ -203,11 +203,17 @@ const UserReservation = ({
 };
 
 // Styled Components
-const BookWrapper = styled.div`& > h4 {margin: 5px 0};`;
+const BookWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    & > h4 {margin: 5px 0};
+`;
 
 const AddRoom = styled.form`
     display: flex;
     flex-flow: column wrap;
+    align-items: center;
+    & > span {font-size: small};
     &.datebook {
         @media (min-width: 769px) {
             display: flex;
@@ -225,7 +231,7 @@ const Input = styled.input`
     &.date {z-index: 1};
     &.submit {
         font-weight: bold;
-        padding: 0 20px;
+        padding: 10px;
         font-size: 20px;
         background: dodgerblue;
         color: white;

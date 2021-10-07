@@ -263,8 +263,9 @@ const PropWrap = styled(PropertyInfo)`
             margin-left: 20px;
             list-style: none;
             & > li {
+                & > p {margin-left: 0};
                 background: white;
-                padding: 5px;
+                padding: 20px;
                 border: 2px solid gray;
                 border-radius: 10px;
                 margin: 5px 0;

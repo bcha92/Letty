@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import { GoTriangleDown, GoTriangleRight } from "react-icons/go";
+
+// Import Sub-Component CancelBookOption
+import CancelBookOption from "./ProfileCancel";
 
 // Main Profile Component
 const Profile = ({ user, PORT, images }) => {
     let history = useHistory(); // useHistory
 
     // Local States for Cancel Book and Notification
-    const [showCancel, setCancel] = useState(false);
     const [pending, setPending] = useState(null);
 
     // Billing States
@@ -80,7 +81,7 @@ const Profile = ({ user, PORT, images }) => {
         })
     }, [PORT, user.sub, payments])
 
-    // Delete Reservation Handler
+        // Delete Reservation Handler
     const deleteReservation = (reservationId) => {
         fetch(PORT + `/book/${reservationId}`, {
             method: "DELETE",
@@ -158,28 +159,16 @@ const Profile = ({ user, PORT, images }) => {
                     }</p>
                     <B>Status: {
                         prop.approved === null ? <O>PENDING</O> :
-                        prop.approved ? <G>APPROVED</G> : <R>DECLINED</R>
+                        prop.approved ? <G>APPROVED</G> : <R>REJECTED</R>
                     }</B>
-                    <p className={showCancel ? "prop" : ""}>
-                        {prop.approved === null ?
-                            <>
-                                <B className="cursor"
-                                    onClick={() => setCancel(!showCancel)}
-                                >{showCancel ?
-                                    <GoTriangleDown /> : <GoTriangleRight />
-                                } Cancel Booking? </B>
-                                {showCancel && <O>WARNING! Once you press this button, this action will be irreversible.
-                                <Button onClick={() => deleteReservation(prop._id)}>Cancel</Button>
-                                </O>}
-                            </> :
-                            prop.approved ?
-                            <G>Your booking has been approved by the owner and cannot be cancelled by this site. Please contact the owner directly for cancellation or alternative arrangements.</G> :
-                            <R>
-                                Your booking has been rejected by the owner. Please press cancel to remove this from your account.
-                                <Button onClick={() => deleteReservation(prop._id)}>Cancel</Button>
-                            </R>
-                        }
-                    </p>
+                    {prop.approved === null ?
+                    <CancelBookOption id={prop._id} /> :
+                    prop.approved ?
+                    <G>Your booking has been approved by the owner and cannot be cancelled by this site. Please contact the owner directly for cancellation or alternative arrangements.</G> :
+                    <R>
+                        Your booking has been rejected by the owner. Please press dismiss to remove this from your account.
+                        <Button onClick={() => deleteReservation(prop._id)}>Dismiss</Button>
+                    </R>}
                 </Item>
                 ) :
                 <B>
@@ -308,13 +297,13 @@ const Item = styled.div`
     border: 3px solid gray;
     border-radius: 10px;
     color: black;
+    display: flex;
+    flex-flow: column wrap;
+    flex: 1;
     padding: 20px;
     margin: 10px 0;
-    max-width: 700px;
-    & > p.prop {
-        display: flex;
-        flex-direction: column;
-    };
+    min-width: 350px;
+    max-width: 40vw;
     @media (min-width: 769px) {
         min-width: 600px;
         margin-right: 20px;
@@ -351,7 +340,7 @@ const Biv = styled(ProfileWrap)`
 `;
 
 const Button = styled.button`
-    margin: 10px;
+    margin: 10px 0;
     font-weight: bold;
     color: white;
     background: red;

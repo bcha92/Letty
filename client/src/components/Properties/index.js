@@ -30,45 +30,49 @@ const Locations = ({ PORT, GK }) => {
     }, [PORT, type])
 
     return <LocationWrap>
-        <LocationList onClick={() => setSelect(null)}>
-            <h2>Locations</h2>
-            <h3>Filter By Type:</h3>
-            <Select // Type of Property
-                onChange={e => setType(e.target.value)}
-                defaultValue="all"
-            >{/* Property Types options mapped by fetch */}
-                <option key="all" value="all">All - No Filter</option>
-                {propType !== null && propType.map((type, index) => 
-                <option key={index} value={type}>{type}</option>)}
-            </Select>
-            {list !== undefined && list === null ? <h2>Loading...</h2> :
-            list.length === 0 ?
-            <h2>There are no locations that match your criteria</h2> :
-            list.map(property =>
-                // List of Properties Iterated
-                <Item
-                    key={property._id}
-                    className={select === property._id && "selected"}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setSelect(property._id);
-                        setLocation(property);
-                    }}
-                >
-                    <h2>{property.name}</h2>
-                    <p>
-                        {property.address}
-                        {property.suite.length !== 0 &&
-                        ", " + property.suite}
-                    </p>
-                    <p>Property Type: {property.type}</p>
-                    <p
-                        className="blue"
-                        onClick={() => history.push(`/locations/${property._id}`)}
-                    >View Property in Detail</p>
-                </Item>
-            )}
-        </LocationList>
+        <LocationStick>
+            <LocationStick>
+                <h2>Locations</h2>
+                <h3>Filter By Type:</h3>
+                <Select // Type of Property
+                    onChange={e => setType(e.target.value)}
+                    defaultValue="all"
+                >{/* Property Types options mapped by fetch */}
+                    <option key="all" value="all">All - No Filter</option>
+                    {propType !== null && propType.map((type, index) => 
+                    <option key={index} value={type}>{type}</option>)}
+                </Select>
+            </LocationStick>
+            <LocationList onClick={() => setSelect(null)}>
+                {list !== undefined && list === null ? <h2>Loading...</h2> :
+                list.length === 0 ?
+                <h2>There are no locations that match your criteria</h2> :
+                list.map(property =>
+                    // List of Properties Iterated
+                    <Item
+                        key={property._id}
+                        className={select === property._id && "selected"}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setSelect(property._id);
+                            setLocation(property);
+                        }}
+                    >
+                        <h2>{property.name}</h2>
+                        <p>
+                            {property.address}
+                            {property.suite.length !== 0 &&
+                            ", " + property.suite}
+                        </p>
+                        <p>Property Type: {property.type}</p>
+                        <p
+                            className="blue"
+                            onClick={() => history.push(`/locations/${property._id}`)}
+                        >View Property in Detail</p>
+                    </Item>
+                )}
+            </LocationList>
+        </LocationStick>
 
         {/* MAP // GOOGLE MAP // AREA */}
         {list !== null && <div style={{width: "100%", height: "80vh"}} className="map">
@@ -127,9 +131,24 @@ const LocationWrap = styled.div`
     };
 `;
 
-const LocationList = styled.div`
+const LocationStick = styled.div`
     display: flex;
     flex-flow: column wrap;
+    @media (max-width: 768px) {
+        margin-bottom: 20px;
+    };
+`;
+
+const LocationList = styled.div`
+    display: flex;
+    flex-flow: column;
+    padding: 0 20px;
+    margin-bottom: 50px;
+    overflow-y: scroll;
+    max-height: 400px;
+    @media (min-width: 769px) {
+        max-height: 80vh;
+    }
 `;
 
 const Select = styled.select`

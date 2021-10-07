@@ -224,7 +224,7 @@ const DropDown = styled.div` // Dropdown Menu
 const UserDrop = styled.div` // User Dropdown Menu
     z-index: 1;
     border: 1px solid gray;
-    margin-top: 180px;
+    top: 50px;
     right: 0;
     position: fixed;
     background: white;
