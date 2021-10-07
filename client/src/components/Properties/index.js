@@ -177,6 +177,7 @@ const Item = styled.div`
     &:hover {
         background: whitesmoke;
         border: 4px solid yellowgreen;
+        transform: scale(105%);
         transition: 300ms ease-in-out;
     }
     &.selected {
