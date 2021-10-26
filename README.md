@@ -1,4 +1,9 @@
 # LETTY
+### Demo
+https://drive.google.com/file/d/1qPgIlMAFR_2SaKsCbSDPb8IfwkSP9vyt/view
+
+### Description
+---
 Concept website for short-term commercial space rental and reservations using Full-Stack Development in React.js and JSX for the front end, Node.js and Express on the back end, and MongoDB for the main site's online database, and Google Maps for map function and rendering.
 
 <img src="screenshots/home.JPG" alt="splash" />
